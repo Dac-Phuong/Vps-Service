@@ -12,7 +12,7 @@
     </UiFlex>
     <!--Menu-->
     <div class="w-full grow p-2 md:pt-2 pt-0">
-      <LayoutDefaultNavMenu />
+      <LayoutDefaultNavMenu  />
     </div>
 
     <!--Support-->

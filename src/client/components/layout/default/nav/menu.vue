@@ -1,10 +1,11 @@
 <template>
   <UiFlex type="col" class="space-y-4 w-full">
-    <UVerticalNavigation :links="links" />
+    <UVerticalNavigation :links="links"/>
   </UiFlex>
 </template>
 
 <script setup>
+
 const links = [{
   label: 'Trang chủ',
   icon: 'i-heroicons-home',
