@@ -1,4 +1,6 @@
-import formatVNString from "../../../utils/formatVNString"
+import { IDBUser } from "~~/types"
+import { IDBProduct } from "~~/types/model/product"
+import { IDBUserCart } from "~~/types/model/user"
 
 export default defineEventHandler(async (event) => {
   try {
@@ -28,7 +30,7 @@ export default defineEventHandler(async (event) => {
     cart.save()
 
     return resp(event, { message: 'Thêm giỏ hàng thành công', result: cart })
-  } catch (error) {
+  } catch (error: any) {
     return resp(event, { code: 400, message: error.toString() })
   }
 })

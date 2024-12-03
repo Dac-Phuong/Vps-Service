@@ -1,3 +1,7 @@
+import { IAuth } from "~~/types";
+import { IDBOS } from "~~/types/model/os";
+import { IDBProduct } from "~~/types/model/product";
+
 export default defineEventHandler(async (event) => {
 
     try {
@@ -31,7 +35,7 @@ export default defineEventHandler(async (event) => {
         if (!order) throw "Tạo giao dịch không thành công";
         for (let i = 0; i < cart.length; i++) {
             const item = cart[i];
-
+            
             const product = await DB.Product.findOne({ _id: item.product }).select('_id name').populate({ path: 'product', select: '_id name', strictPopulate: false }) as IDBProduct
             if (!product) throw 'Sản phẩm không tồn tại'
 

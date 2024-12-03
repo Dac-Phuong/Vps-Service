@@ -1,3 +1,5 @@
+import { IDBUser } from "~~/types";
+
 export default defineEventHandler(async (event) => {
   try {
     const user = (await getAuth(event)) as IDBUser;
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
     cart.quantity = quantity;
     await DB.UserCart.updateOne({ _id: _id }, cart);
     return resp(event, { message: "Cập nhật số lượng thành công", result: cart });
-  } catch (error) {
+  } catch (error:any) {
     return resp(event, { code: 500, message: error.toString() });
   }
 })

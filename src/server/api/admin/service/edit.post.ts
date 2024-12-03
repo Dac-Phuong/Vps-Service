@@ -1,3 +1,5 @@
+import { IDBUser } from "~~/types"
+
 export default defineEventHandler(async (event) => {
   try {
     const auth = (await getAuth(event)) as IDBUser
@@ -17,7 +19,7 @@ export default defineEventHandler(async (event) => {
     service.info = info
     await service.save()
     return resp(event, { message: 'Thao tác thành công' })
-  } catch (error) {
+  } catch (error: any) {
     return resp(event, { code: 400, message: error.toString() })
   }
 })

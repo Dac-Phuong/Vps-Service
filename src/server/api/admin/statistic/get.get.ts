@@ -1,3 +1,4 @@
+import { IDBUser } from "~~/types";
 import resp from "../../../utils/resp"
 
 export default defineEventHandler(async (event) => {
@@ -16,7 +17,7 @@ export default defineEventHandler(async (event) => {
       service
     }
     return resp(event, { result: data })
-  } catch (error) {
+  } catch (error: any) {
   return resp(event, { code: 400, message: error.toString() })
   }
 })

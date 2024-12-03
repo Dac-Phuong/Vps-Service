@@ -1,4 +1,4 @@
-import type { IDBNewsCategory } from "~~/types"
+import { IDBNewsCategory } from "~~/types/model/news"
 
 export default defineEventHandler(async (event) => {
   try {

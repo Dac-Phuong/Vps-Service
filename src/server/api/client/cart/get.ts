@@ -1,3 +1,5 @@
+import { IDBUser } from "~~/types";
+
 export default defineEventHandler(async (event) => {
   try {
     const user = (await getAuth(event)) as IDBUser;
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
       .populate("option")
       .sort({ createdAt: -1 });
     return resp(event, { result: cart });
-  } catch (error) {
+  } catch (error:any) {
     return resp(event, { code: 500, message: error.toString() });
   }
 });
