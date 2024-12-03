@@ -5,7 +5,6 @@
         <UForm :state="page" @submit="getList" class="mr-1">
           <UiFlex>
             <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
-            <USelectMenu v-model="page.search.by" :options="['USER', 'PRODUCT']" />
           </UiFlex>
         </UForm>
       </UiFlex>

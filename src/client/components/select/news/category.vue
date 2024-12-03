@@ -38,7 +38,6 @@ const fetch = async () => {
   try {
     loading.value = true
     const list = await useAPI('admin/news/category/select')
-    console.log('ffff',list);
     options.value = options.value.concat(list.map(i => ({ _id: i._id, label: i.name })))
     loading.value = false
   }

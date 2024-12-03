@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
   try {
     const config = await DB.Config.findOne()
     if(!config) throw 'Không tìm thấy cấu hình trang'
-      console.log(config);
     return resp(event, { result: config })
   } 
   catch (e:any) {
