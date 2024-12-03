@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const category = await DB.NewsCategory.findOne({ _id: _id }).select('name')
     if(!category) throw 'Danh mục không tồn tại'
     
-    const news = await DB.News.count({ category: _id })
+    const news = await DB.News.countDocuments({ category: _id })
     if(news > 0) throw 'Không thể xóa danh mục đã có tin tức'
 
     await DB.NewsCategory.deleteOne({ _id: _id })
