@@ -33,7 +33,7 @@
       <UiFlex class="py-4 flex-wrap" justify="between">
         <div>
           <UiText size="sm" weight="semibold">Thanh toán lần đầu</UiText>
-          <UiText size="sm" color="gray" class="pt-2">{{ item.price ? useMoney().toMoney(item.price) : 0 }} đ</UiText>
+          <UiText size="sm" color="gray" class="pt-2">{{ item.money ? useMoney().toMoney(item.money) : 0 }} đ</UiText>
         </div>
         <div>
           <UiText size="sm" weight="semibold">Chu kỳ thanh toán</UiText>
@@ -41,7 +41,7 @@
         </div>
         <div>
           <UiText size="sm" weight="semibold">Số tiền thanh toán định kỳ</UiText>
-          <UiText size="sm" color="gray" class="pt-2">{{ item.price ? useMoney().toMoney(item.price) : 0 }} đ</UiText>
+          <UiText size="sm" color="gray" class="pt-2">{{ item.money ? useMoney().toMoney(item.money) : 0 }} đ</UiText>
         </div>
         <div>
           <UiText size="sm" weight="semibold">SL máy chủ VPS</UiText>
@@ -53,24 +53,22 @@
         <div v-if="item.info && item.info.length > 0" v-for="(server, index) in item.info"
           class="border border-gray-200 dark:border-gray-800 rounded-lg p-3 mt-2">
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm" weight="semibold">Tên máy chủ : </UiText>
-            <UiText size="sm" color="gray" class="ml-2">{{ item.server || "..." }}</UiText>
+            <UiText size="sm" >Tên máy chủ: </UiText>
+            <UiText size="sm" weight="semibold"class="ml-2">{{ item.server || "..." }}</UiText>
           </UiFlex>
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm" weight="semibold">Hệ điều hành : </UiText>
-            <UiText size="sm" color="gray" class="ml-2">{{ item?.os?.name || "..." }}</UiText>
+            <UiText size="sm" >Địa chỉ IP : </UiText>
+            <UiText size="sm" weight="semibold"class="ml-2">{{ server.ip || "..." }}</UiText>
           </UiFlex>
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm" weight="semibold">Địa chỉ IP : </UiText>
-            <UiText size="sm" color="gray" class="ml-2">{{ server.ip || "..." }}</UiText>
+            <UiText size="sm" >Tài khoản: </UiText>
+            <UiText size="sm" weight="semibold"class="ml-2">{{ server.account || "..." }}</UiText>
           </UiFlex>
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm" weight="semibold">Mật khẩu : </UiText>
+            <UiText size="sm" >Mật khẩu: </UiText>
             <UiFlex>
-              <UiText size="sm" color="gray" class="ml-2">{{ item.status == 1 && showPassword[index] ? server.password :
-                "............." }}</UiText>
-              <UiIcon :name="showPassword[index] ? 'i-bxs-hide' : 'i-bxs-show'" color="primary" class="ml-2" pointer
-                @click="showPassword[index] = !showPassword[index]" v-if="item.status == 1" />
+              <UiText weight="semibold" size="sm" class="ml-2">{{ item.status == 1 && showPassword[index] ? server.password :  "............." }}</UiText>
+              <UiIcon :name="showPassword[index] ? 'i-bxs-hide' : 'i-bxs-show'" color="primary" class="ml-2" pointer @click="showPassword[index] = !showPassword[index]" v-if="item.status == 1" />
             </UiFlex>
           </UiFlex>
         </div>

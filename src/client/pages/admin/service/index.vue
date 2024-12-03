@@ -50,14 +50,15 @@
     </UiFlex>
 
     <!-- Modal Edit -->
-    <UModal v-model="modal.edit" preventClose>
+    <UModal v-model="modal.edit" preventClose :ui="{ width: 'lg:max-w-3xl md:max-w-2xl sm:max-w-xl' }">
       <UForm :state="state" @submit="editAction" class="p-4">
         <UiFlex justify="between" class="mb-4">
           <UiText size="base" weight="semibold" color="gray" text="Thông tin VPS" />
         </UiFlex>
         <UiFlex class="align-center" v-for="(item, index) in state.info" :key="index">
-          <UInput v-model="item.ip" class="w-2/4 mb-2" required placeholder="Nhập địa chỉ IP" />
-          <UInput v-model="item.password" class="w-2/4 mb-2 ml-2" required placeholder="Nhập mật khẩu" />
+          <UInput v-model="item.ip" class="w-3/4 mb-2" required placeholder="Địa chỉ IP" />
+          <UInput v-model="item.account" class="w-2/4 mb-2 ml-2" required placeholder="Tài khoản" />
+          <UInput v-model="item.password" class="w-2/4 mb-2 ml-2" required placeholder="Mật khẩu" />
           <UButton type="button" icon="i-heroicons-trash" @click="state.info.splice(index, 1)" color="red"
             class="ml-2 mb-2 w-[40px] h-[40px] flex items-center justify-center" />
         </UiFlex>
@@ -149,7 +150,8 @@ const state = ref({
   _id: null,
   info: [{
     ip: null,
-    password: null
+    password: null,
+    account: null
   }],
 });
 const statusFormat = {
@@ -165,7 +167,7 @@ const modal = ref({
 watch(() => modal.value.edit, (val) => !val &&
   (state.value = {
     _id: null,
-    info: [{ ip: null, password: null }],
+    info: [{ ip: null,account: null, password: null }],
   })
 );
 
@@ -183,7 +185,7 @@ const actions = (row) => [
       icon: "i-bx-pencil",
       click: () => {
         state.value._id = row._id;
-        state.value.info = row.info.length > 0 ? JSON.parse(JSON.stringify(row.info)) : [{ ip: null, password: null }];
+        state.value.info = row.info.length > 0 ? JSON.parse(JSON.stringify(row.info)) : [{ ip: null,account: null, password: null }];
         modal.value.edit = true;
       },
     },
