@@ -95,7 +95,7 @@ const navItems = [
     defaultOpen: true,
     slot: 'tab-5',
     children: [
-      { label: 'Admin log', to: '/admin/logs' },
+      { label: 'Admin log', to: '/admin/log' },
     ]
   },
 ]
