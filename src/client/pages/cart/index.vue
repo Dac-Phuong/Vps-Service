@@ -1,7 +1,7 @@
 <template>
   <div>
     <UBreadcrumb class="mb-3 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng' }]" />
-    <div v-if="!!cartStore.cart && cartStore.cart.length > 0" class="mt-3">
+    <div v-if="!!cartStore.cart && cartStore.cart.length > 0 && authStore.isLogin" class="mt-3">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
         <div class="col-span-12 md:col-span-8 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
           <UiText text="Xác nhận đơn hàng" weight="semibold" size="base" class="mb-3" />
