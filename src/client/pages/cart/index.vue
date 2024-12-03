@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer class="p-2">
     <UBreadcrumb class="mb-3 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng' }]" />
     <div v-if="!!cartStore.cart && cartStore.cart.length > 0 && authStore.isLogin" class="mt-3">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
@@ -93,7 +93,7 @@
     </div>
     <UiAuth v-if="!authStore.isLogin" title="Vui lòng đăng nhập" />
     <UiEmpty v-if="cartStore.cart && cartStore.cart.length === 0 && authStore.isLogin" class="mt-32" title="Giỏ hàng rỗng" />
-  </div>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>

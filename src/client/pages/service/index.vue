@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <UContainer class="p-2">
         <UBreadcrumb class="mb-5" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Dịch vụ' }]" />
         <div v-if="!!authStore.isLogin">
             <UiFlex class="mb-4">
@@ -46,7 +46,7 @@
             </UiFlex>
         </div>
         <UiAuth v-else title="Vui lòng đăng nhập" />
-    </div>
+    </UContainer>
 </template>
 
 <script setup>

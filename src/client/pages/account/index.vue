@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer class="p-2">
     <UBreadcrumb class="mb-3 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Tài khoản' }]" />
     <UiEmpty v-if="!authStore.isLogin" title='Bạn chưa đăng nhập' />
     <div v-else class="xl:col-span-10 col-span-2">
@@ -8,7 +8,7 @@
       <AuthSignForgot v-if="tab == 1" />
       <ServiceUserTax v-if="tab == 2" />
     </div>
-  </div>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>

@@ -2,8 +2,14 @@
   <div>
     <!-- Banner -->
     <LayoutDefaultBanner class="mb-4" />
-    <!--Product-->
-    <ServiceProduct title="Gói dịch vụ" class="mb-20" />
+    <UContainer class="p-2">
+      <!--Product-->
+      <ServiceProduct title="Gói dịch vụ" />
+    </UContainer>
+    <!-- content -->
+    <ServiceContentSetting />
+    <!--  -->
+    <ServiceContentFeatures />
   </div>
 </template>
 

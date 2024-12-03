@@ -4,9 +4,7 @@
       <LayoutDefaultHeader />
     </header>
     <main class="pt-[var(--layout-default-header-size)] min-h-[calc(100vh-var(--layout-default-header-size))]">
-      <UContainer class="p-2">
         <slot></slot>
-      </UContainer>
     </main>
     <LayoutDefaultSupport />
     <footer class="mt-auto">

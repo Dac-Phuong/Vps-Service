@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer class="p-2">
     <UBreadcrumb class="mb-3" divider="/"
       :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Quản lý dịch vụ', to: '/service' }, { label: 'Chi tiết dịch vụ' }]" />
     <div v-if="item?.status == 0"
@@ -128,7 +128,7 @@
         </UiFlex>
       </UCard>
     </UModal>
-  </div>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>

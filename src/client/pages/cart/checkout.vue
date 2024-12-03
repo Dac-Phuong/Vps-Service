@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer class="p-2">
     <UBreadcrumb class="mb-3 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng', to: '/cart' }, { label: 'Thanh toán' }]" />
     <div v-if="!!cartStore.cart && cartStore.cart.length > 0" class="mt-3">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
@@ -88,7 +88,7 @@
       <NuxtLink href="/" class="btn btn-primary w-full mt-3 text-center block hover:underline text-primary" size="md">
         Quay lại</NuxtLink>
     </div>
-  </div>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>

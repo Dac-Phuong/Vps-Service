@@ -23,30 +23,21 @@
 
 <script setup>
 const authStore = useAuthStore()
-const links = [{
-  label: 'Trang chủ',
-  to: '/',
-  icon: 'i-heroicons-home',
-},
-{
-  label: 'Cửa hàng',
-  to: '/shop',
-  icon: 'material-symbols:store-outline',
-},
-{
-  label: 'Tin tức',
-  to: '/news',
-  icon: 'i-mdi-newspaper',
-},
-{
-  label: 'Giỏ hàng',
-  to: '/cart',
-  icon: 'i-material-symbols:shopping-cart',
-},
-
-{
-  label: 'dịch vụ',
-  to: '/service',
-  icon: 'material-symbols:home-repair-service',
-}]
+const links = [
+  {
+    label: 'Cửa hàng',
+    to: '/shop',
+  },
+  {
+    label: 'Tin tức',
+    to: '/news',
+  },
+  {
+    label: 'Giỏ hàng',
+    to: '/cart',
+  },
+  {
+    label: 'Dịch vụ',
+    to: '/service',
+  }]
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <UContainer class="p-2">
     <UBreadcrumb class="mb-5" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Đơn hàng' }]" />
     <ServiceOrderHistory/>
-  </div>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>

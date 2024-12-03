@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer class="p-2">
     <div v-if="!!product" class="mt-3">
       <UBreadcrumb class="mb-3" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: product.name }, { label: 'Đăng ký' }]" />
       <div>
@@ -78,7 +78,7 @@
         </UForm>
       </div>
     </div>
-  </div>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>
