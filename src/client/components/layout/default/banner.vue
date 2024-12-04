@@ -13,7 +13,7 @@
       top-0 left-0
     "></div>
     <!-- Content -->
-    <UContainer>
+    <div class="md:ml-0 lg:ml-40">
       <UiFlex type="col" items="start" justify="center" class="
         relative
         w-full h-full 
@@ -21,18 +21,19 @@
         aspect-auto
       ">
         <!-- Name -->
-        <UiText weight="bold" color="primary" class="xl:text-5xl md:text-4xl text-2xl mb-2">
+        <UiText weight="bold" color="primary" class="xl:text-5xl md:text-4xl text-2xl mb-2"
+          style="text-shadow: 0px 0px 5px rgba(0,0,0,0.5);">
           {{ banner.config.name || 'ENI VPS SERVICE' }}
         </UiText>
 
         <!-- Description -->
-        <UiText weight="semibold" class="xl:text-2xl md:text-xl text-base text-gray-300 md:max-w-xl">
+        <UiText weight="semibold" class="xl:text-2xl md:text-xl text-base text-white md:max-w-xl">
           {{ banner.config.description || 'Kênh bán VPS giá rẻ và chất lượng tốt nhất' }}
         </UiText>
         <!-- About -->
         <UButton class="mt-6" @click="router.push('/shop')" size="md">Xem Thêm</UButton>
       </UiFlex>
-    </UContainer>
+    </div>
   </div>
 </template>
 

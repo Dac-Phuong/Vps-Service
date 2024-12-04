@@ -43,7 +43,8 @@ const open = async (key) => {
 .BoxProducts
   transition: all 0.25s ease
   &:hover
-    transform: scale(1.02)
+    transform: scale(1.03)
     border: 1px solid rgb(var(--color-primary-DEFAULT))
     box-shadow: 0 0 15px rgb(var(--color-primary-DEFAULT))
+    transform-origin: center center
 </style>

@@ -9,7 +9,7 @@
       body: { padding: 'p-0 sm:p-0' },
     }"
   > 
-    <div style="aspect-ratio: 9 / 9">
+    <div style="aspect-ratio: 8 / 9">
       <USkeleton class="w-full h-full rounded-none" />
     </div>
   </UCard>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UiFlex class="gap-2 mb-6">
+    <UiFlex class="gap-2 mb-2">
       <UiText :text="title" weight="semibold" size="lg" />
       <UButton size="xs" color="gray" class="ml-auto" v-if="!!list && list.length < page.total">Xem Thêm</UButton>
     </UiFlex>

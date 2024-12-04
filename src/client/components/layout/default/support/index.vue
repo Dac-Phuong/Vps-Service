@@ -1,9 +1,9 @@
 <template>
   <div>
     <UTooltip @click="modal = true"
-      class="fixed bottom-6 cursor-pointer right-4 dark:bg-primary border border-primary-200 dark:border-primary-800 rounded-full p-3 flex items-center justify-center transition-transform transform hover:scale-110"
+      class="fixed bottom-6 cursor-pointer bg-primary right-4 dark:bg-primary border border-primary-200 dark:border-primary-800 rounded-full p-3 flex items-center justify-center transition-transform transform hover:scale-110"
       text="Liên hệ hỗ trợ" :popper="{ placement: 'top' }">
-      <UIcon size="20" name="material-symbols:chat" />
+      <UIcon size="20" class="text-white" name="material-symbols:chat" />
     </UTooltip>
     <UModal v-model="modal">
       <UCard>
