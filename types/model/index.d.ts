@@ -4,7 +4,7 @@ import type { IDBProduct } from './product'
 import type { IDBOrder, IDBOrderDetail } from './order'
 import type { IDBUser, IDBUserCart, IDBUserTax } from './user'
 import type { IDBOS } from './os'
-import type { IDBService } from './service'
+import type { IDBService, IDBServiceUpgrade } from './service'
 import type { IDBNews, IDBNewsCategory } from './news'
 export { IDBConfig, IDBConfigStore } from './config'
 export { IDBUser, IDBUserStore } from './user'
@@ -29,6 +29,7 @@ export interface IGlobalDB {
   OrderDetail: Model<IDBOrderDetail>
    
   Service: Model<IDBService>
+  ServiceUpgrade: Model<IDBServiceUpgrade>
   OS: Model<IDBOS>
   
   LogAdmin: Model<IDBLogAdmin>

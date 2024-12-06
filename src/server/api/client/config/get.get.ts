@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
       -zalo.client_secret 
       -tiktok.client_secret
       -google.client_secret
+      -product
     `) as IDBConfig
 
     if(!config) throw 'Không tìm thấy cấu hình trang'

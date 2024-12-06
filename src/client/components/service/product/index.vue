@@ -2,7 +2,7 @@
   <div>
     <div class="relative py-10" >
       <UiText text="BẢNG GIÁ THUÊ CLOUD VPS GIÁ RẺ" class="text-center text-xl md:text-3xl font-bold text-black mb-4"  />
-      <UiText text="NHANH HƠN - RẺ HƠN" class="text-center text-lg text-black"  />
+      <UiText text="Nhanh hơn - rẻ hơn" class="text-center text-lg text-black"  />
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-12  lg:gap-6 md:gap-4 gap-2" v-if="!!loading.product || !list">
       <LoadingProductBox v-for="i in 8" :key="i" class="xl:col-span-3 lg:col-span-4 col-span-6" />

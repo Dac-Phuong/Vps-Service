@@ -1,5 +1,5 @@
 <template>
-  <UiContent title="Product" sub="Quản lý các sản phẩm">
+  <UiContent title="Product" sub="Quản lý các sản phẩm" >
     <UiFlex class="mb-4">
       <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
       <UButton color="gray" @click="modal.add = true">Thêm mới</UButton>
@@ -160,9 +160,12 @@
       <div class="p-4">
         <UiText text="Thông số kỹ thuật" weight="semibold" size="lg" class="mb-3" />
         <UiFlex class="align-center border border-gray-200 rounded-lg dark:border-gray-800 p-2 mb-2" v-for="(item, index) in dataShow" :key="index">
-          <UiText equired class="w-2/5 font-semibold" >{{item.key}} :</UiText>
-          <UiText :text="item.value" required class="w-full ml-2" />
+          <UiText class="w-2/5 font-semibold" size="sm" >{{item.key}} :</UiText>
+          <UiText :text="item.value" class="w-full ml-2" size="sm" />
         </UiFlex>
+        <div class="w-full flex justify-end">
+          <UButton color="gray" @click="modal.show = false" class="ml-auto border border-gray-200 dark:border-gray-800">Đóng</UButton>
+        </div>
       </div>
     </UModal>
     <!-- Modal show -->
@@ -170,11 +173,14 @@
       <div class="p-4">
         <UiText text="Giá thuê/tháng" weight="semibold" size="lg" class=" mb-3" />
         <UiFlex v-if="dataPrice && dataPrice.length > 0" class="align-center border border-gray-200 rounded-lg dark:border-gray-800 p-2 mb-2" v-for="(item, index) in dataPrice" :key="index">
-          <UiText equired class="w-2/5 font-semibold" >{{item.number}} Tháng :</UiText>
-          <UiText required class="w-full ml-2" >{{ useMoney().toMoney(item.price) }}đ</UiText>
+          <UiText class="w-2/5 font-semibold" size="sm" >{{item.number}} Tháng :</UiText>
+          <UiText class="w-full ml-2" size="sm">{{ useMoney().toMoney(item.price) }}đ</UiText>
         </UiFlex>
         <div v-else>
           <UiText text="Chưa có giá thuê"  color="red" weight="semibold" size="sm" class="m-1 mb-3" />
+        </div>
+        <div class="w-full flex justify-end">
+          <UButton color="gray" @click="modal.options = false" class="ml-auto border border-gray-200 dark:border-gray-800">Đóng</UButton>
         </div>
       </div>
     </UModal>
@@ -317,9 +323,7 @@ const actions = (row) => [
       label: "Sửa thông tin",
       icon: "i-bx-pencil",
       click: () => {
-        Object.keys(stateEdit.value).forEach(
-          (key) => (stateEdit.value[key] = row[key])
-        );
+        Object.keys(stateEdit.value).forEach((key) => (stateEdit.value[key] = row[key]));
         stateEdit.value.specs = JSON.parse(JSON.stringify(row.specs));
         stateEdit.value.category = row.category._id;
         modal.value.edit = true;

@@ -9,7 +9,7 @@ import { DBProduct } from './product'
 import { DBCategory } from './category'
 import { DBOrder, DBOrderDetail } from './order'
 import { DBOS } from './os'
-import { DBService } from './service'
+import { DBService, DBServiceUpgrate } from './service'
 import { DBNews, DBNewsCategory } from './news'
 
 export default (mongoose : Mongoose) : IGlobalDB => {
@@ -27,9 +27,13 @@ export default (mongoose : Mongoose) : IGlobalDB => {
     Product: DBProduct(mongoose),
     OS: DBOS(mongoose),
     Category: DBCategory(mongoose),
+
     Order: DBOrder(mongoose),
     OrderDetail: DBOrderDetail(mongoose),
+
     Service: DBService(mongoose),
+    ServiceUpgrade: DBServiceUpgrate(mongoose),
+
     LogUser: DBLogUser(mongoose),
     LogAdmin: DBLogAdmin(mongoose),
     LogLogin: DBLogLogin(mongoose)

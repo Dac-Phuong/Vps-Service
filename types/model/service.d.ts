@@ -16,3 +16,20 @@ export interface IDBService {
   status: number
   info: Array
 }
+
+export interface IDBServiceUpgrade {
+  _id: Types.ObjectId
+  createdAt: Date
+  updatedAt: Date
+  code: string
+  service: Types.ObjectId | IDBService
+  gate: Types.ObjectId | IDBGate
+  user: Types.ObjectId | IDBUser
+  status: number
+  ram: number
+  cpu: number
+  disk: number
+  money: number
+  note: string
+  server: Object
+}

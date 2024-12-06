@@ -33,10 +33,8 @@ export default defineEventHandler(async (event) => {
             status: 0,
         });
         if (!order) throw "Tạo giao dịch không thành công";
-        for (let i = 0; i < cart.length; i++) {
-            const item = cart[i];
-            
-            const product = await DB.Product.findOne({ _id: item.product }).select('_id name').populate({ path: 'product', select: '_id name', strictPopulate: false }) as IDBProduct
+        const promises = cart.map(async (item, index) => {
+            const product = await DB.Product.findOne({ _id: item.product }).select('_id name') as IDBProduct
             if (!product) throw 'Sản phẩm không tồn tại'
 
             const os = await DB.OS.findOne({ _id: item.os }).select('name') as IDBOS
@@ -63,7 +61,9 @@ export default defineEventHandler(async (event) => {
                 quantity: item.quantity,
                 status: 0,
             });
-        }
+        });
+
+        await Promise.all(promises);
         await DB.UserCart.deleteMany({ user: user._id });
         return resp(event, { message: "Tạo giao dịch thành công", result: 2 });
     } catch (e: any) {

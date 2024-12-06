@@ -163,6 +163,7 @@ const columns = [
     label: 'Hành động',
   }
 ]
+
 const prdColumns = [
   {
     key: 'product.name',

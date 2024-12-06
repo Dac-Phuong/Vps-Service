@@ -53,6 +53,11 @@ export const DBConfig = (mongoose : Mongoose) => {
       client_id: { type: String, default: '' },
       client_secret: { type: String, default: '' },
       client_verify: { type: String, default: '' },
+    },
+    product:{
+      ram: { type: Number, default: 0 },
+      cpu: { type: Number, default: 0 },
+      disk: { type: Number, default: 0 },
     }
   }, {
     timestamps: true

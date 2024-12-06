@@ -49,7 +49,7 @@ export interface IDBConfig {
     client_verify: string
     client_ads: string
   }
-  
+
   tiktok: {
     client_id: string
     client_secret: string
@@ -60,6 +60,11 @@ export interface IDBConfig {
     client_id: string
     client_secret: string
     client_verify: string
+  }
+  product: {
+    ram: number
+    cpu: number
+    disk: number
   }
 }
 
@@ -92,7 +97,7 @@ export interface IDBConfigStore {
 
   vip: {
     month: number
-    quarter : number
+    quarter: number
     year: number
     forever: number
   }
@@ -118,5 +123,11 @@ export interface IDBConfigStore {
   zalo: {
     client_id: string
     client_verify: string
+  }
+  
+  product: {
+    ram: number
+    cpu: number
+    disk: number
   }
 }

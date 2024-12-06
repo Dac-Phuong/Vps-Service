@@ -74,12 +74,8 @@
             <UiText size="sm" weight="semibold" color="red" align="right">{{ useMoney().toMoney(totalPrice) || "..." }}đ
             </UiText>
           </UiFlex>
-          <UButton type="button" @click="checkout"
-            class="btn btn-primary w-full h-[40px] justify-center align-center mt-3">Hoàn tất
-          </UButton>
-          <NuxtLink href="/cart"
-            class="btn btn-primary w-full justify-center text-primary align-center mt-2 text-center block" size="md">
-            Quay lại</NuxtLink>
+          <UButton type="button" @click="checkout" :loading="loading"  class="btn btn-primary w-full h-[40px] justify-center align-center mt-3">Hoàn tất </UButton>
+          <NuxtLink href="/cart" class="btn btn-primary w-full justify-center text-primary align-center mt-2 text-center block" size="md">  Quay lại</NuxtLink>
         </div>
       </div>
     </div>
@@ -114,7 +110,7 @@ const totalPrice = computed(() => {
     return total + item.option.price * item.quantity;
   }, 0);
 });
-const startCopy = (text: any) => {
+const startCopy = (text: string) => {
   if (!isSupported.value || !text) return;
   copy(text);
   useNotify().success("Sao chép vào bộ nhớ tạm thành công");
@@ -125,11 +121,14 @@ const getOption = (item: any, index: number) => {
 };
 const checkout = async () => {
   try {
+    loading.value = true
     const data = JSON.stringify(state.value)
     await cartStore.checkout(data)
+    loading.value = false
     router.push('/order')
   }
   catch (e) {
+    loading.value = false
     console.error(e)
   }
 }
