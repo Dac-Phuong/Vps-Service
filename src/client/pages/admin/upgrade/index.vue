@@ -3,10 +3,7 @@
     <UiFlex class="mb-4">
       <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
       <UForm :state="page" @submit="getList" class="mr-1">
-        <UiFlex>
-          <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
-          <USelectMenu v-model="page.search.by" :options="['CODE','USER']" />
-        </UiFlex>
+        <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
       </UForm>
     </UiFlex>
 
@@ -18,8 +15,8 @@
           <UiText weight="semibold" color="primary" pointer @click="viewOrder(row._id)">{{ row.code }}</UiText>
         </template>
         <template #service-data="{ row }">
-          <UBadge weight="semibold" color="primary" class="cursor-pointer" variant="soft"
-            @click="viewVps(row.server)">Xem</UBadge>
+          <UBadge weight="semibold" color="primary" class="cursor-pointer" variant="soft" @click="viewVps(row.server)">
+            Xem</UBadge>
         </template>
         <template #status-data="{ row }">
           <UBadge :color="statusFormat[row.status].color" variant="soft">
@@ -145,9 +142,11 @@
             </UiFlex>
           </UiFlex>
         </div>
-        <UiText v-else size="sm" class="mb-2"  color="red" text="Chưa có thông tin máy chủ" />
+        <UiText v-else size="sm" class="mb-2" color="red" text="Chưa có thông tin máy chủ" />
         <UiFlex justify="end" class="mt-3">
-          <UButton color="gray" @click="modal.show = false" class="ml-1 border border-gray-200 dark:border-gray-800">Đóng</UButton>
+          <UButton color="gray" @click="modal.show = false" class="ml-1 border border-gray-200 dark:border-gray-800">
+            Đóng
+          </UButton>
         </UiFlex>
       </UCard>
     </UModal>

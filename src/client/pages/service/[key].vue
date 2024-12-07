@@ -84,7 +84,7 @@
 
     <!-- Table -->
     <div class="mt-5">
-      <UiText text="Lịch sử nâng cấp" weight="semibold" size="base"  />
+      <UiText text="Lịch sử nâng cấp" weight="semibold" size="base" class="pb-2" />
       <UCard :ui="{
         body: { padding: 'p-0 sm:p-0' },
         header: { padding: 'px-3 sm:px-3 py-2 sm:py-2' },
@@ -92,9 +92,13 @@
       }">
         <template #header>
           <UiFlex>
-            <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-1" />
-            <UForm :state="page" :submit="getList" class="max-w-[9rem] ml-auto">
-              <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"></UInput>
+            <USelectMenu v-model="page.size" :options="options" class="mr-1" />
+            <UForm :state="page" @submit="getList" class="ml-auto">
+              <UiFlex>
+                <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"
+                  class="mr-1 border border-gray-200 dark:border-gray-800 rounded-lg" />
+                <USelectMenu v-model="page.search.by" :options="['CODE', 'MONEY']" />
+              </UiFlex>
             </UForm>
           </UiFlex>
         </template>
@@ -102,15 +106,19 @@
         <LoadingTable v-if="loading" />
         <UTable v-model:sort="page.sort" :columns="columns" :rows="list">
           <template #code-data="{ row }">
-            <UiText color="primary" weight="semibold" pointer @click="viewGate(row._id)">{{ row.code }}</UiText>
+            <UTooltip text="Xem thêm" :popper="{ placement: 'top' }">
+              <UBadge color="primary" variant="soft" class="cursor-pointer" weight="semibold"
+                @click="viewGate(row.gate, row.money, row.code)">{{ row.code }}
+              </UBadge>
+            </UTooltip>
           </template>
 
           <template #gate-data="{ row }">
-            <UBadge variant="soft" color="gray">{{ row.gate.name }}</UBadge>
+            <UBadge variant="soft" color="gray">{{ row.gate?.name || "..." }}</UBadge>
           </template>
 
           <template #server-data="{ row }">
-            <UBadge variant="soft" color="gray">{{ row.server.ip }}
+            <UBadge variant="soft" color="gray">{{ row.server?.ip || "..." }}
             </UBadge>
           </template>
           <template #ram-data="{ row }">
@@ -136,11 +144,6 @@
             {{ useDayJs().displayFull(row.createdAt) }}
           </template>
 
-          <template #action-data="{ row }">
-            <UButton v-if="row.status == 0" color="gray" size="xs" @click="openUndo(row)">Hủy</UButton>
-            <span v-if="row.status == 1">...</span>
-            <span v-if="row.status == 2">...</span>
-          </template>
         </UTable>
 
         <template #footer>
@@ -155,19 +158,23 @@
       <UCard>
         <UiFlex justify="between" class="mb-6">
           <UiText size="sm" color="gray" weight="semibold">Kênh</UiText>
-          <UiText size="sm" weight="semibold">{{ item.order.gate?.name || '...' }}</UiText>
+          <UiText size="sm" weight="semibold">{{ item.status == 0 && item.order.gate?.name || showGate.name }}
+          </UiText>
         </UiFlex>
 
         <UiFlex justify="between" class="mb-6">
           <UiText size="sm" color="gray" weight="semibold" mini>Người hưởng thụ</UiText>
-          <UiText size="sm" weight="semibold" align="right" class="ml-4">{{ item.order.gate?.person || '...' }}</UiText>
+          <UiText size="sm" weight="semibold" align="right" class="ml-4">{{ item.status == 0 && item.order.gate.person
+            ||
+            showGate.person }}</UiText>
         </UiFlex>
 
         <UiFlex justify="between" class="mb-6">
           <UiText size="sm" color="gray" weight="semibold" mini>Số tài khoản</UiText>
 
-          <UiFlex @click="startCopy(item.order.gate?.number)">
-            <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ item.order.gate?.number }}
+          <UiFlex @click="startCopy(item.status == 0 && item.order.gate?.number || showGate.number)">
+            <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ item.status == 0 &&
+              item.order.gate?.number || showGate.number }}
             </UiText>
             <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
           </UiFlex>
@@ -175,19 +182,19 @@
 
         <UiFlex justify="between" class="mb-6">
           <UiText size="sm" color="gray" weight="semibold" mini>Số tiền</UiText>
-
-          <UiFlex @click="startCopy(item.order.money)">
-            <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ item.order.money ?
-              toMoney(item.order.money)
-              : 0 }}</UiText>
+          <UiFlex @click="startCopy(item.status == 0 && toMoney(item.order.money) || toMoney(showGate.money))">
+            <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ item.status == 0 &&
+              toMoney(item.order.money) || toMoney(showGate.money) }}</UiText>
             <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
           </UiFlex>
         </UiFlex>
 
         <UiFlex justify="between">
           <UiText size="sm" color="gray" weight="semibold" mini>Nội dung</UiText>
-          <UiFlex @click="startCopy(item.order.code)">
-            <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ item.order.code || '...' }}
+          <UiFlex @click="startCopy(item.status == 0 && item.order.code || showGate.code)">
+            <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ item.status == 0 &&
+              item.order.code ||
+              showGate.code }}
             </UiText>
             <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
           </UiFlex>
@@ -197,7 +204,8 @@
           <UiImg :src="item.order.qrcode" class="w-[250px] md:max-w-[300px]" />
         </UiFlex>
         <UiFlex justify="end" class="pt-5">
-          <UButton color="gray" @click="modal.gate = false">Đóng</UButton>
+          <UButton color="gray" class="border border-gray-200 dark:border-gray-800" @click="modal.gate = false">Đóng
+          </UButton>
         </UiFlex>
       </UCard>
     </UModal>
@@ -300,7 +308,6 @@
 <script lang="ts" setup>
 import { useClipboard } from '@vueuse/core'
 const { copy, isSupported } = useClipboard()
-const toast = useToast()
 const { toMoney } = useMoney()
 const { product } = useConfigStore().config;
 const route = useRoute();
@@ -309,10 +316,18 @@ const item = ref<any>({});
 const gate = ref<any[]>([]);
 const showPassword = ref<any>([]);
 const list = ref<any[]>([]);
+
 const modal = ref({
   gate: false,
   upgrade: false,
 })
+const options = ref<any[]>([
+  { label: "5", value: 5 },
+  { label: "10", value: 10 },
+  { label: "20", value: 20 },
+  { label: "50", value: 50 },
+  { label: "100", value: 100 },
+]);
 
 const state = ref<any>({
   service: route.params.key,
@@ -324,6 +339,11 @@ const state = ref<any>({
   index: 0,
   code: "Upgrade-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
 })
+const showGate = ref<any>({
+  code: '',
+  gate: null,
+  money: 0
+});
 
 const statusFormat = ref<any>({
   0: { label: 'Chưa duyệt', color: 'orange' },
@@ -341,10 +361,11 @@ const page = ref<any>({
   },
   search: {
     key: null,
-    by: 'code'
+    by: 'CODE'
   },
   total: 0,
 })
+
 const columns = [
   {
     key: 'code',
@@ -377,10 +398,6 @@ const columns = [
     label: 'Thời gian tạo',
     sortable: true
   },
-  {
-    key: 'action',
-    label: 'Hành động',
-  }
 ]
 const startCopy = (text: string) => {
   if (!isSupported.value || !text) return
@@ -391,26 +408,15 @@ const getOption = (data: any, index: number) => {
   state.value.index = index
   state.value.gate = data
 };
-const validate = (state: any) => {
-  if (state.cpu === 0 && state.ram === 0 && state.disk === 0) {
-    toast.add({
-      color: 'red',
-      title: 'Thông báo',
-      description: 'Vui lòng chọn thông số nâng cấp',
-    })
-    return false
-  }
+const viewGate = (data: Record<string, any>, money: number, code: string) => {
+  modal.value.gate = true;
+  showGate.value = {
+    ...data,
+    money,
+    code,
+  };
 
-  if (state.server === undefined) {
-    toast.add({
-      color: 'red',
-      title: 'Thông báo',
-      description: 'Vui lòng chọn máy chủ',
-    })
-    return false
-  }
-  return true
-}
+};
 watch(() => modal.value.upgrade, () => {
   state.value.cpu = 0
   state.value.ram = 0
@@ -418,6 +424,12 @@ watch(() => modal.value.upgrade, () => {
   state.value.server = undefined
   state.value.code = "Upgrade-" + Math.random().toString(36).substring(2, 6).toUpperCase();
 })
+watch(() => page.value.size, () => getList());
+watch(() => page.value.current, () => getList());
+watch(() => page.value.sort.column, () => getList());
+watch(() => page.value.sort.direction, () => getList());
+watch(() => page.value.search.key, (val) => !val && getList())
+
 const get = async () => {
   try {
     loading.value = true;
@@ -432,7 +444,6 @@ const get = async () => {
   }
 };
 const upgrade = async () => {
-  if (!validate(state.value)) return
   try {
     loading.value = true;
     await useAPI("client/service/upgrade", JSON.parse(JSON.stringify(state.value)));

@@ -11,8 +11,6 @@
           <UForm @submit="getList" class="max-w-[9rem] ml-auto">
             <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"></UInput>
           </UForm>
-          <!-- <SelectDate time v-model="page.range.start" placeholder="Bắt đầu" size="sm" class="ml-1 max-w-[140px]"/>
-          <SelectDate time v-model="page.range.end" placeholder="Kết thúc" size="sm" class="ml-1 max-w-[140px]"/> -->
         </UiFlex>
       </template>
 
