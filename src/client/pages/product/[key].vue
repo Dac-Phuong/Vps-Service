@@ -110,6 +110,7 @@ const getOption = (option: any, index: number) => {
 const validate = (state: any) => {
   const errors = [];
   if (!state.server) errors.push({ path: 'server', message: 'Vui lòng nhập tên máy chủ' });
+  if (state.server.length < 3) errors.push({ path: 'server', message: 'Tên máy chủ ít nhất 3 ký tự' });
   if (/[^\x00-\x7F]/.test(state.server) || /\s/.test(state.server)) errors.push({ path: 'server', message: 'Tên máy chủ không hợp lệ' });
   if (!state.os) errors.push({ path: 'os', message: 'Vui lòng chọn hệ điều hành' });
   return errors

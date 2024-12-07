@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
       if(!service) throw 'Không tìm thấy chi tiết giao dịch'
 
       service.forEach((item) => {
-        item.end_time = null;
         item.status = 0
         item.save()
       });

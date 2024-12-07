@@ -1,6 +1,7 @@
 import type { H3Event } from 'h3'
 import type { Types } from 'mongoose'
-import { IDBGate, IDBOrder, IDBUser } from '~~/types'
+import { IDBGate, IDBUser } from '~~/types'
+import { IDBOrder } from '~~/types/model/order'
 
 interface IBodyData {
   _id: Types.ObjectId,
@@ -46,17 +47,13 @@ export default async (
   const gate = await DB.Gate.findOne({ _id: order.gate, display: true }).select('_id') as IDBGate
   if (!gate) throw 'Không tìm thấy thông tin kênh nạp'
 
-  const service = await DB.Service.find({ order: _id ,user: user._id})
+  const service = await DB.Service.find({ order: _id, user: user._id })
   if (!service) throw 'Không tìm thấy chi tiết giao dịch'
 
   // Set Verify Person
   let verify_person
   if (!!verifier) {
     verify_person = verifier
-  }
-  else {
-    const bot = await DB.User.findOne({ 'username': 'bot' }).select('_id')
-    verify_person = bot._id
   }
 
   // Update Payment
@@ -72,8 +69,6 @@ export default async (
     }
   })
 
-
-
   // Check Status
   if (realStatus == 1) {
     await DB.Order.updateOne({ _id: _id }, {
@@ -84,10 +79,15 @@ export default async (
       item.status = 1
       await item.save();
     });
-
     if (!!verifier) logAdmin(event, `Chấp nhận giao dịch mua hàng <b>${order.code}</b> với số tiền <b>${realMoney.toLocaleString('vi-VN')}</b>`, verifier)
   }
   else {
+    if (realStatus == 2) {
+      service.forEach(async (item) => {
+        item.status = 3
+        await item.save();
+      });
+    }
     if (!!verifier) logAdmin(event, `Từ chối giao dịch mua hàng <b>${order.code}</b> với lý do <b>${realReason}</b>`, verifier)
   }
 }

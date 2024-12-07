@@ -1,10 +1,8 @@
 <template>
   <div>
     <USkeleton class="w-full h-80" v-if="loading"/>
-    
     <div v-else>
       <DataEmpty icon="i-bx-credit-card" text="Không có thông tin" v-if="!order"/>
-
       <UCard v-else>
         <UiFlex justify="between" class="mb-6">
           <UiText size="sm" color="gray" weight="semibold">Kênh</UiText>

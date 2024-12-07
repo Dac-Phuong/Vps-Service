@@ -68,7 +68,6 @@
     <!-- Modal View -->
     <UModal v-model="modal.order" prevent-close>
       <ServiceOrderView :fetch-id="stateOrder" class="p-4" />
-
       <UiFlex justify="end" class="px-4 pb-4">
         <UButton color="gray" @click="modal.order = false">Đóng</UButton>
       </UiFlex>
@@ -253,7 +252,6 @@ const undoAction = async () => {
   try {
     loading.value.undo = true
     await useAPI('client/order/undo', JSON.parse(JSON.stringify(stateUndo.value)))
-
     loading.value.undo = false
     modal.value.undo = false
     getList()

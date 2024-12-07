@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     if(!auth) throw 'Vui lòng đăng nhập trước'
     
     const { _id, reason } = await readBody(event)
+    
     if(!_id) throw 'Không tìm thấy ID giao dịch'
     if(!reason) throw 'Vui lòng nhập lý do hủy'
 

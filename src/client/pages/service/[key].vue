@@ -53,21 +53,21 @@
         <div v-if="item.info && item.info.length > 0" v-for="(server, index) in item.info"
           class="border border-gray-200 dark:border-gray-800 rounded-lg p-3 mt-2">
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm">Tên máy chủ: </UiText>
-            <UiText size="sm" weight="semibold" class="ml-2">{{ item.server || "..." }}</UiText>
+            <UiText size="sm"  weight="semibold" color="gray">Tên máy chủ: </UiText>
+            <UiText size="sm" class="ml-2">{{ item.server || "..." }}</UiText>
           </UiFlex>
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm">Địa chỉ IP : </UiText>
-            <UiText size="sm" weight="semibold" class="ml-2">{{ server.ip || "..." }}</UiText>
+            <UiText size="sm"  weight="semibold" color="gray">Địa chỉ IP : </UiText>
+            <UiText size="sm" class="ml-2">{{ server.ip || "..." }}</UiText>
           </UiFlex>
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm">Tài khoản: </UiText>
-            <UiText size="sm" weight="semibold" class="ml-2">{{ server.account || "..." }}</UiText>
+            <UiText size="sm"  weight="semibold" color="gray">Tài khoản: </UiText>
+            <UiText size="sm" class="ml-2">{{ server.account || "..." }}</UiText>
           </UiFlex>
           <UiFlex class="mt-2" justify="between">
-            <UiText size="sm">Mật khẩu: </UiText>
-            <UiFlex>
-              <UiText weight="semibold" size="sm" class="ml-2">{{ item.status == 1 && showPassword[index] ?
+            <UiText weight="semibold" color="gray" size="sm">Mật khẩu: </UiText>
+            <UiFlex>  
+              <UiText size="sm"  class="ml-2">{{ item.status == 1 && showPassword[index] ?
                 server.password : "............." }}</UiText>
               <UiIcon :name="showPassword[index] ? 'i-bxs-hide' : 'i-bxs-show'" color="primary" class="ml-2" pointer
                 @click="showPassword[index] = !showPassword[index]" v-if="item.status == 1" />

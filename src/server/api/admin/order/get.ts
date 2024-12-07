@@ -3,7 +3,6 @@ import type { IAuth } from "~~/types"
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
-    if(auth.type !== 100) throw 'Bạn không phải quản trị viên'
     const { _id } = await readBody(event)
     if(!_id) throw 'Không tìm thấy ID đơn hàng'
 
