@@ -83,7 +83,7 @@
     </UCard>
 
     <!-- Table -->
-    <div class="mt-5">
+    <div class="mt-5" v-if="item.status == 1">
       <UiText text="Lịch sử nâng cấp" weight="semibold" size="base" class="pb-2" />
       <UCard :ui="{
         body: { padding: 'p-0 sm:p-0' },
@@ -97,7 +97,6 @@
               <UiFlex>
                 <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"
                   class="mr-1 border border-gray-200 dark:border-gray-800 rounded-lg" />
-                <USelectMenu v-model="page.search.by" :options="['CODE', 'MONEY']" />
               </UiFlex>
             </UForm>
           </UiFlex>
@@ -415,7 +414,6 @@ const viewGate = (data: Record<string, any>, money: number, code: string) => {
     money,
     code,
   };
-
 };
 watch(() => modal.value.upgrade, () => {
   state.value.cpu = 0
@@ -448,6 +446,7 @@ const upgrade = async () => {
     loading.value = true;
     await useAPI("client/service/upgrade", JSON.parse(JSON.stringify(state.value)));
     loading.value = false;
+    getList()
     modal.value.upgrade = false
   } catch (error) {
     loading.value = false;

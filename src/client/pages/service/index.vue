@@ -1,12 +1,12 @@
 <template>
     <UContainer class="p-2">
         <UBreadcrumb class="mb-5" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Dịch vụ' }]" />
-        <div v-if="!!authStore.isLogin">
+        <UCard v-if="!!authStore.isLogin">
             <UiFlex class="mb-4">
-                <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
+                <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto border border-gray-200 dark:border-gray-800 rounded-xl" />
                 <UForm :state="page" @submit="getList" class="mr-1">
                     <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"
-                        class="mr-1" />
+                        class="mr-1 border border-gray-200 dark:border-gray-800 rounded-xl" />
                 </UForm>
             </UiFlex>
 
@@ -44,7 +44,7 @@
                 <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Chọn cột" />
                 <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="4" />
             </UiFlex>
-        </div>
+        </UCard>
         <UiAuth v-else title="Vui lòng đăng nhập" />
     </UContainer>
 </template>

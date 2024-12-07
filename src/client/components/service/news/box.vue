@@ -16,7 +16,7 @@
         {{ news.title }}
       </NuxtLink>
       <UiText class="line-clamp-1 lg:text-md md:text-sm text-xs" color="gray">{{ news.description }}</UiText>
-      <UBadge color="primary" class="cursor-pointer mt-2 absolute right-2 top-1">{{ news.category.name }}</UBadge>
+      <UBadge color="primary" class="cursor-pointer mt-2 absolute right-2 top-0">{{ news.category.name }}</UBadge>
     </div>
 
   </UCard>

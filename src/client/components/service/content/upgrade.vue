@@ -22,7 +22,7 @@
                             {{ service.price.toLocaleString() }}
                         </UiText>
                         <UiText class="text-gray-500 mb-4">đ/tháng</UiText>
-                        <UButton class="w-full justify-center bg-white border-2 border-primary text-black font-semibold py-2 px-4 rounded-lg hover:bg-primary hover:text-white transition-colors">
+                        <UButton @click="open()" class="w-full justify-center bg-white border border-primary text-black font-semibold py-2 px-4 rounded-lg hover:bg-primary hover:text-white transition-colors">
                             Mua thêm
                         </UButton>
                     </div>
@@ -33,6 +33,8 @@
 </template>
 
 <script setup>
+const router = useRoute()
+const authStore = useAuthStore()
 const services = [
     {
         title: 'Mua thêm 50GB SSD',
@@ -67,6 +69,10 @@ const services = [
         price: 230000,
     }
 ]
+const open = () => {
+    if(!authStore.isLogin) return useNotify().error('Vui lòng đăng nhập trước')
+    return useRouter().push('/service')
+}
 </script>
 
 <style lang="scss" scoped></style>
