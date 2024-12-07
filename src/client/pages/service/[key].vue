@@ -64,13 +64,11 @@
             <UiText size="sm"  weight="semibold" color="gray">Tài khoản: </UiText>
             <UiText size="sm" class="ml-2">{{ server.account || "..." }}</UiText>
           </UiFlex>
-          <UiFlex class="mt-2" justify="between">
+          <UiFlex class="mt-1" justify="between">
             <UiText weight="semibold" color="gray" size="sm">Mật khẩu: </UiText>
             <UiFlex>  
-              <UiText size="sm"  class="ml-2">{{ item.status == 1 && showPassword[index] ?
-                server.password : "............." }}</UiText>
-              <UiIcon :name="showPassword[index] ? 'i-bxs-hide' : 'i-bxs-show'" color="primary" class="ml-2" pointer
-                @click="showPassword[index] = !showPassword[index]" v-if="item.status == 1" />
+              <UiText size="sm" class="ml-2 text-center">{{ item.status == 1 && showPassword[index] ? server.password : "********" }}</UiText>
+              <UiIcon :name="showPassword[index] ? 'i-bxs-hide' : 'i-bxs-show'" color="primary" class="ml-1" pointer @click="showPassword[index] = !showPassword[index]" v-if="item.status == 1" />
             </UiFlex>
           </UiFlex>
         </div>
@@ -336,7 +334,7 @@ const state = ref<any>({
   gate: null,
   server: undefined,
   index: 0,
-  code: "Upgrade-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
+  code: undefined,
 })
 const showGate = ref<any>({
   code: '',
@@ -345,9 +343,10 @@ const showGate = ref<any>({
 });
 
 const statusFormat = ref<any>({
-  0: { label: 'Chưa duyệt', color: 'orange' },
-  1: { label: 'Hoàn thành', color: 'green' },
-  2: { label: 'Đã hủy', color: 'red' },
+  0: { label: 'Chưa kích hoạt', color: 'orange' },
+  1: { label: 'Đã kích hoạt', color: 'green' },
+  2: { label: 'Hết hạn', color: 'primary' },
+  3: { label: 'Đã hủy', color: 'red' },
 });
 
 const page = ref<any>({

@@ -12,7 +12,7 @@
     </div>
 
     <div class="lg:p-4 p-2 lg:pt-2 pt-1">
-      <NuxtLink :to="`/news/${news.key}`" class="lg:text-lg md:text-md text-sm line-clamp-1 text-gray hover:text-primary">
+      <NuxtLink :to="`/news/${news.key}`" class="lg:text-lg md:text-md text-sm line-clamp-2 text-gray hover:text-primary">
         {{ news.title }}
       </NuxtLink>
       <UiText class="line-clamp-1 lg:text-md md:text-sm text-xs" color="gray">{{ news.description }}</UiText>
