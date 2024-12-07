@@ -7,9 +7,13 @@
       <ServiceProduct />
     </UContainer>
     <!-- Content -->
-    <ServiceContentSetting />
+    <ServiceContentUpgrade />
     <!-- Features -->
     <ServiceContentFeatures />
+    <!-- News -->
+    <!-- <UContainer class="mb-2">
+      <ServiceNewsList title="TIN TỨC NỔI BẬT" />
+    </UContainer> -->
     <!-- Questions -->
     <ServiceContentQuestions />
   </div>

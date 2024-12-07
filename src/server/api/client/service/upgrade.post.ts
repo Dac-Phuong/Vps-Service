@@ -7,17 +7,18 @@ export default defineEventHandler(async (event) => {
 
     const { service, code, ram, cpu, disk, gate, server } = await readBody(event)
     if (!service) throw 'Dữ liệu đầu vào không hợp lệ'
-    if (isNaN(ram) || isNaN(cpu) || isNaN(disk) || !server) throw 'Dữ liệu đầu vào không hợp lệ'
+    if (isNaN(ram) || isNaN(cpu) || isNaN(disk)) throw 'Dữ liệu đầu vào không hợp lệ'
     if(ram == 0 && cpu == 0 && disk == 0) throw 'Vui lòng chọn nâng cấp'
+    if(!server) throw 'Vui lòng chọn ip máy chủ'
 
     const config = await DB.Config.findOne({}).select('product') as IDBConfig
-    if (!config) throw 'Không tìm thấy cấu hình trang'
+    if (!config) throw 'Không tìm thấy cấu hình vps'
 
     const check = await DB.Service.findOne({ _id: service })
     if (!check) throw 'Không tìm dịch vụ'
 
     const checkUpgrade = await DB.ServiceUpgrade.findOne({ service: check._id, user: auth._id, status: 0 })
-    if (checkUpgrade) throw 'Bạn có gói nâng cấp chưa thanh toán, Vui lòng thanh toán trước để tiếp tục' 
+    if (checkUpgrade) throw 'Bạn có gói nâng cấp chưa hoàn tất, Vui lòng thanh toán để tiếp tục' 
 
     const total = ram * config.product.ram + cpu * config.product.cpu + disk * config.product.disk
     const upgrade = await DB.ServiceUpgrade.create({

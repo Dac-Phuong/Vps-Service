@@ -1,15 +1,6 @@
 <template>
-  <UiContent 
-    title="Config" 
-    sub="Chỉnh sửa cấu hình trang" 
-    class="max-w-3xl mx-auto"
-  >
-    <UAccordion
-      color="primary"
-      variant="soft"
-      size="md"
-      :items="menu"
-    >
+  <UiContent title="Config" sub="Chỉnh sửa cấu hình trang" class="max-w-3xl mx-auto">
+    <UAccordion color="primary" variant="soft" size="md" :items="menu">
       <template #default="{ item, open }">
         <UButton :color="open ? 'primary' : 'gray'" size="md" class="mb-2">
           {{ item.label }}
@@ -34,7 +25,7 @@
             <UFormGroup label="Logo">
               <UiUploadImage v-model="state.image.logo">
                 <template #default="{ select, loading }">
-                  <UInput :model-value="state.image.logo" :loading="loading" readonly @click="select"/>
+                  <UInput :model-value="state.image.logo" :loading="loading" readonly @click="select" />
                 </template>
               </UiUploadImage>
             </UFormGroup>
@@ -42,7 +33,7 @@
             <UFormGroup label="Icon">
               <UiUploadImage v-model="state.image.app">
                 <template #default="{ select, loading }">
-                  <UInput :model-value="state.image.app" :loading="loading" readonly @click="select"/>
+                  <UInput :model-value="state.image.app" :loading="loading" readonly @click="select" />
                 </template>
               </UiUploadImage>
             </UFormGroup>
@@ -50,7 +41,7 @@
             <UFormGroup label="Banner">
               <UiUploadImage v-model="state.image.og">
                 <template #default="{ select, loading }">
-                  <UInput :model-value="state.image.og" :loading="loading" readonly @click="select"/>
+                  <UInput :model-value="state.image.og" :loading="loading" readonly @click="select" />
                 </template>
               </UiUploadImage>
             </UFormGroup>
@@ -78,7 +69,7 @@
             </UFormGroup>
 
             <UFormGroup label="Hòm thư">
-              <UInput v-model="state.contact.email"/>
+              <UInput v-model="state.contact.email" />
             </UFormGroup>
 
             <UFormGroup label="Địa chỉ">
@@ -289,34 +280,34 @@ const state = ref({
 })
 
 const menu = [
-{
-  label: 'Cơ bản',
-  slot: 'basic'
-},
-{
-  label: 'Liên hệ',
-  slot: 'contact'
-},
-{
-  label: 'Mạng xã hội',
-  slot: 'social'
-},
-{
-  label: 'Facebook',
-  slot: 'facebook'
-},
-{
-  label: 'Google',
-  slot: 'google'
-},
-{
-  label: 'Tiktok',
-  slot: 'tiktok'
-},
-{
-  label: 'Zalo',
-  slot: 'zalo'
-}
+  {
+    label: 'Cơ bản',
+    slot: 'basic'
+  },
+  {
+    label: 'Liên hệ',
+    slot: 'contact'
+  },
+  {
+    label: 'Mạng xã hội',
+    slot: 'social'
+  },
+  {
+    label: 'Facebook',
+    slot: 'facebook'
+  },
+  {
+    label: 'Google',
+    slot: 'google'
+  },
+  {
+    label: 'Tiktok',
+    slot: 'tiktok'
+  },
+  {
+    label: 'Zalo',
+    slot: 'zalo'
+  }
 ]
 
 const getConfig = async () => {
@@ -334,7 +325,7 @@ const update = async (change) => {
     getConfig()
     updating.value = false
   }
-  catch(e) {
+  catch (e) {
     updating.value = false
   }
 }

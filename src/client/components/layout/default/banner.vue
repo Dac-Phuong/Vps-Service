@@ -25,7 +25,6 @@
           style="text-shadow: 0px 0px 5px rgba(0,0,0,0.5);">
           {{ banner.config.name || 'ENI VPS SERVICE' }}
         </UiText>
-
         <!-- Description -->
         <UiText weight="semibold" class="xl:text-2xl md:text-xl text-base text-white md:max-w-xl">
           {{ banner.config.description || 'Kênh bán VPS giá rẻ và chất lượng tốt nhất' }}

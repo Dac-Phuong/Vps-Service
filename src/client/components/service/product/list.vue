@@ -2,10 +2,10 @@
   <div>
     <UiFlex class="gap-2 mb-6">
       <UForm :state="page" @submit="get" class="mr-1">
-        <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
+        <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1 border border-gray-200 dark:border-gray-800 rounded-xl" />
       </UForm>
       <USelectMenu v-model="page.category" :options="[{ name: 'Tất cả', _id: '' }, ...category]" placeholder="Danh mục"
-        size="md" option-attribute="name" />
+        size="md" option-attribute="name" class="border border-gray-200 dark:border-gray-800 rounded-xl" />
     </UiFlex>
     <div class="grid grid-cols-12 lg:gap-6 md:gap-4 gap-2" v-if="!!loading || !list">
       <LoadingProductBox v-for="i in page.size" :key="i" class="xl:col-span-3 lg:col-span-4 col-span-6" />
