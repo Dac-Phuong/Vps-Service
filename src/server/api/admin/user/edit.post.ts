@@ -5,12 +5,10 @@ import logAdmin from '../../../utils/logAdmin'
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
-    if(auth.type < 1) throw 'Bạn không phải quản trị viên'
+    if(auth.type !== 100) throw 'Bạn không phải quản trị viên'
 
     const { _id, email, phone, password, type, block } = await readBody(event)
     if(!_id) throw 'Dữ liệu đầu vào không hợp lệ'
-    if(type < 0 || type > 2) throw 'Dữ liệu quyền hạn không hợp lệ'
-    if(block < 0 || block > 1) throw 'Dữ liệu khóa không hợp lệ'
 
     const user = await DB.User.findOne({_id: _id})
     .select('username email phone type block') as IDBUser
