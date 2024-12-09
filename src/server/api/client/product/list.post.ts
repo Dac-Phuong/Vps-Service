@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     if(!!search.key){
       if(search.by == 'NAME') match['name'] = { $regex : `.*${search.key.toLowerCase()}.*`, $options : 'i' }
     }
+  
     if(!!category && category._id != ''){
       const categoryCheck = await DB.Category.findOne({ _id: category._id }).select('_id') as IDBCategory
       if(!categoryCheck) throw 'Danh mục không tồn tại'

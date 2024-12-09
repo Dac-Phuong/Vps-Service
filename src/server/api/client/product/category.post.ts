@@ -2,29 +2,20 @@ import type { IDBCategory } from "~~/types"
 
 export default defineEventHandler(async (event) => {
   try {
-    const { size, current, sort, category,search } = await readBody(event)
-    if(!size || !current || !sort) throw 'Dữ liệu phân trang sai'
-    if(!sort.column || !sort.direction) throw 'Dữ liệu sắp xếp sai'
-
+    const { key } = await readBody(event)
     // Props
     const match : any = { display: true }
-    const sorting : any = { pin: -1 }
-    sorting[sort.column] = sort.direction == 'desc' ? -1 : 1
-    if(!!search.key){
-      if(search.by == 'NAME') match['name'] = { $regex : `.*${search.key.toLowerCase()}.*`, $options : 'i' }
-    }
-    if(!!category){
-      const categoryCheck = await DB.Category.findOne({ _id: category }).select('_id') as IDBCategory
+      
+    if(!!key){
+      const categoryCheck = await DB.Category.findOne({ key: key }).select('_id') as IDBCategory
       if(!categoryCheck) throw 'Danh mục không tồn tại'
       match['category'] = categoryCheck._id
     }
     const list = await DB.Product
     .find(match)
     .select('-content')
-    .populate({ path: 'category', select: 'name key color' })
-    .sort(sorting)
-    .limit(size)
-    .skip((current - 1) * size)
+    .populate({ path: 'category', select: 'name key' })
+    .limit(8)
     const total = await DB.Product.countDocuments(match)
 
     return resp(event, { result: { list, total } })

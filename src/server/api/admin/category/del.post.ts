@@ -10,8 +10,9 @@ export default defineEventHandler(async (event) => {
     const { _id } = await readBody(event)
     if(!_id) throw 'Dữ liệu đầu vào không hợp lệ'
 
-    const category = await DB.Category.findOne({ _id: _id }).select('name')
+    const category = await DB.Category.findOne({ _id: _id }).select('name key _id')
     if(!category) throw 'Danh mục không tồn tại'
+    if(category.key == 'vps-gia-re' || category.key == 'vps-cao-cap') throw 'Không thể xóa danh mục này'  
     
     const product = await DB.Product.countDocuments({ category: _id })
     if(product > 0) throw 'Không thể xóa danh mục đã có sản phẩm'
