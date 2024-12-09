@@ -9,7 +9,7 @@
       <LoadingProductBox v-for="i in 8" :key="i" class="xl:col-span-3 lg:col-span-4 col-span-6" />
     </div>
     <div v-else>
-      <UiEmpty v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
+      <UiEmpty v-if="list.length == 0" class="mb-6" title="Hiện tại chưa có dữ liệu" />
       <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4" v-else>
         <ServiceProductBox v-for="product in list" :key="product._id" :product="product"
           class="xl:col-span-3 lg:col-span-4 col-span-6 " />
@@ -26,7 +26,7 @@
         <LoadingProductBox v-for="i in 8" :key="i" class="xl:col-span-3 lg:col-span-4 col-span-6" />
       </div>
       <div v-else>
-        <UiEmpty v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
+        <UiEmpty v-if="products.length == 0" class="mb-6" title="Hiện tại chưa có dữ liệu" />
         <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4" v-else>
           <ServiceProductBox v-for="product in products" :key="product._id" :product="product"
             class="xl:col-span-3 lg:col-span-4 col-span-6 " />

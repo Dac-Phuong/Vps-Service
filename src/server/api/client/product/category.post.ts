@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
     .find(match)
     .select('-content')
     .populate({ path: 'category', select: 'name key' })
+    .sort({ createdAt: -1 })
     .limit(8)
     const total = await DB.Product.countDocuments(match)
 
