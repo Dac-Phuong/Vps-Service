@@ -5,6 +5,7 @@ export interface IDBUser {
   createdAt: Date
   updatedAt: Date
 
+  account: string
   username: string
   password: string
   email: string
@@ -49,6 +50,7 @@ export interface IDBUserCart {
 export interface IDBUserStore {
   _id? : Types.ObjectId
   username? : string
+  account? : string
   email?: string
   phone?: string
   avatar?: string

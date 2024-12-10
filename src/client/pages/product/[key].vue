@@ -67,11 +67,9 @@
             </div>
             <UiFlex justify="between" class="my-4">
               <UiText size="sm" weight="semibold" color="red">Tổng cộng :</UiText>
-              <UiText size="sm" weight="semibold" color="red" align="right">{{ useMoney().toMoney(state.option?.price)
-                || "..." }} đ</UiText>
+              <UiText size="sm" weight="semibold" color="red" align="right">{{ useMoney().toMoney(state.option?.price) || "..." }} đ</UiText>
             </UiFlex>
-            <UButton type="submit" class="btn btn-primary w-full h-[40px] justify-center align-center mt-3"
-              icon="material-symbols:shopping-cart" :loading="loading">Thêm vào giỏ hàng</UButton>
+            <UButton type="submit" class="btn btn-primary w-full h-[40px] justify-center align-center mt-3" icon="material-symbols:shopping-cart" :loading="loading">Thêm vào giỏ hàng</UButton>
             <NuxtLink href="/" class="btn btn-primary w-full justify-center align-center mt-2 text-center block"
               size="md">Quay lại</NuxtLink>
           </div>
@@ -97,7 +95,7 @@ useSeoMeta({
 const state = ref<any>({
   key: route.params.key,
   option: undefined,
-  server: "",
+  server: "VPS-" + randomText(4),
   os: undefined
 });
 const getOption = (option: any, index: number) => {
@@ -136,11 +134,10 @@ function randomText(length: number) {
 const addToCart = async () => {
   try {
     loading.value = true;
-    state.value.server = state.value.server.trim() + '-' + randomText(4);
     await setCart(JSON.parse(JSON.stringify(state.value)));
     loading.value = false;
     modal.value = false;
-    state.value.server = "";
+    router.push("/cart");
   } catch (e) {
     loading.value = false;
   }

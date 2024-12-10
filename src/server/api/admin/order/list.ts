@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       }
       if(search.by == 'USER'){
         const users = await DB.User.find({
-          username : { $regex : search.key.toLowerCase(), $options : 'i' }
+          account : { $regex : search.key.toLowerCase(), $options : 'i' }
         }).select('_id')
         
         match['user'] = {
@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
           localField: "user",
           foreignField: "_id",
           pipeline: [{
-            $project: { username: 1 }
+            $project: { account: 1 }
           }],
           as: "user"
         }
@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
           localField: "verify.person",
           foreignField: "_id",
           pipeline: [{
-            $project: { username: 1 }
+            $project: { account: 1 }
           }],
           as: "verify_person"
         }

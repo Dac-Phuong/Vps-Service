@@ -109,10 +109,11 @@ const state = ref({
     }],
 });
 const statusFormat = {
-    0: { label: 'Chờ kích hoạt', color: 'orange' },
+    0: { label: 'Chờ kích hoạt', color: 'gray' },
     1: { label: 'Đã kích hoạt', color: 'green' },
     2: { label: 'Hết hạn', color: 'primary' },
-    3: { label: 'Đã hủy', color: 'red' },
+    3: { label: 'Đã hủy', color: 'primary' },
+    4: { label: 'Sắp hết hạn', color: 'orange' },
 }
 // Modal
 const modal = ref({

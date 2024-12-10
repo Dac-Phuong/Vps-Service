@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const match : any = {}
     if(!!search.key){
       if(search.by == 'USER'){
-        const users = await DB.User.find({ username : { $regex : search.key.toLowerCase(), $options : 'i' } }).select('_id')
+        const users = await DB.User.find({ account : { $regex : search.key.toLowerCase(), $options : 'i' } }).select('_id')
         match['user'] = { $in: users.map(i => i._id) }
       }
       if(search.by == 'CODE'){
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     const list = await DB.ServiceUpgrade
       .find(match)
       .populate({ path: 'service', model: 'Sevice', select: 'product os server info' ,  })
-      .populate({ path: 'user', select: 'username' })
+      .populate({ path: 'user', select: 'account' })
       .populate({ path: 'gate', select: 'name person number' })
       .sort(sorting)
       .limit(size)

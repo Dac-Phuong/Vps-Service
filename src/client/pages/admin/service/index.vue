@@ -83,7 +83,7 @@ const list = ref([]);
 // Columns
 const columns = [
   {
-    key: "user.username",
+    key: "user.account",
     label: "Khách hàng",
   },
   {
@@ -159,6 +159,7 @@ const statusFormat = {
     1: { label: 'Đã kích hoạt', color: 'green' },
     2: { label: 'Hết hạn', color: 'primary' },
     3: { label: 'Đã hủy', color: 'red' },
+    4: { label: 'Sắp hết hạn', color: 'orange' },
   }
 // Modal
 const modal = ref({

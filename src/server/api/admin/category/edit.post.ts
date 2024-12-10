@@ -11,15 +11,18 @@ export default defineEventHandler(async (event) => {
     const { _id, name, image } = body
     if(!_id || !name || !image) throw 'Dữ liệu đầu vào không hợp lệ'
 
-    const category = await DB.Category.findOne({ _id: _id }).select('name')
+    const category = await DB.Category.findOne({ _id: _id }).select('name key')
     if(!category) throw 'Danh mục không tồn tại'
+    
+    if(category.key == 'vps-gia-re' || category.key == 'vps-cao-cap') throw 'Không thể sửa danh mục này'  
+
     if(category.name != name){
       const key = formatVNString(event, name, '-')
       const getByName = await DB.Category.findOne({ name: name }).select('_id')
       if(!!getByName) throw 'Tên danh mục đã tồn tại'
-
       body.key = key
     }
+    
     delete body['_id']
     await DB.Category.updateOne({ _id: _id }, body)
 

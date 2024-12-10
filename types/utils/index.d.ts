@@ -4,6 +4,7 @@ import type { IDBUser } from '../model'
 export interface IAuth {
   _id: Types.ObjectId
   username: string
+  account: string
   type: number
 }
 

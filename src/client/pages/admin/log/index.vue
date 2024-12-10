@@ -17,9 +17,9 @@
           <template #createdAt-data="{ row }">
             {{ useDayJs().displayFull(row.createdAt) }}
           </template>
-          <template #user.username-data="{ row }">
+          <template #user.account-data="{ row }">
             <UBadge variant="soft" color="primary" >
-              {{ row.user.username }}
+              {{ row.user.account }}
             </UBadge>
           </template>
           <template #action-data="{ row }">
@@ -43,7 +43,7 @@
   // Columns
   const columns = [
     {
-      key: "user.username",
+      key: "user.account",
       label: "Tài khoản",
     },
     {

@@ -103,7 +103,7 @@ const state = ref<any>({
   index: 0,
   note: null,
   gate: undefined,
-  code: authStore.profile?.username + "-" + Math.random().toString(36).substring(2, 5).toUpperCase(),
+  code: authStore.profile?.account + "-" + Math.random().toString(36).substring(2, 5).toUpperCase(),
 })
 const totalPrice = computed(() => {
   return cartStore?.cart?.reduce((total: number, item: any) => {

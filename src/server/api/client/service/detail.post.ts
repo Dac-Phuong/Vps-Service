@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     if (!_id) throw 'Dữ liệu đầu vào không hợp lệ'
 
     const service = await DB.Service.findOne({ _id: _id })
-      .populate({ path: 'product', select: 'name' })
+      .populate({ path: 'product', select: 'name options' })
       .populate({ path: 'os', select: 'name' })
       .populate({ path: 'order', populate: { path: 'gate', select: 'name person number' } }).lean() 
     if (!service) throw 'Không tìm thấy dịch vụ'

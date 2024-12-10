@@ -77,11 +77,12 @@
         <UiText size="sm" class="mt-2" v-else color="red">Chưa có thống tin máy chủ</UiText>
       </div>
       <UiFlex class="mt-2">
-        <UButton icon="material-symbols:upload-rounded" :disabled="item.status !== 1" @click="modal.upgrade = true"
-          color="primary"> Nâng cấp</UButton>
+        <UButton v-if="item.status == 2 || item.status == 4" icon="material-symbols:sync" @click="modal.expired = true"
+          class="ml-2" color="primary">Gia hạn máy chủ</UButton>
+        <UButton v-else icon="material-symbols:upload-rounded" :disabled="item.status !== 1 && item.status !== 4"
+          @click="modal.upgrade = true" color="primary"> Nâng cấp</UButton>
       </UiFlex>
     </UCard>
-
     <!-- Table -->
     <div class="mt-5" v-if="item.status == 1">
       <UiText text="Lịch sử nâng cấp" weight="semibold" size="base" class="pb-2" />
@@ -120,11 +121,11 @@
             <UBadge variant="soft" color="gray">{{ row.server?.ip || "..." }}
             </UBadge>
           </template>
-          
+
           <template #ram-data="{ row }">
             {{ row.ram }} GB
           </template>
-         
+
           <template #cpu-data="{ row }">
             {{ row.cpu }} CPU
           </template>
@@ -215,13 +216,13 @@
       <UCard>
         <UForm :state="state">
           <UFormGroup :label="`CPU (${toMoney(state.cpu)} CPU) `" name="cpu">
-            <URange :step="0" :min="0" :max="100" v-model="state.cpu" />
+            <URange :step="0" :min="0" :max="50" v-model="state.cpu" />
           </UFormGroup>
           <UFormGroup :label="`RAM (${toMoney(state.ram)} GB)`" name="ram">
-            <URange :step="0" :min="0" :max="100" v-model="state.ram" />
+            <URange :step="0" :min="0" :max="50" v-model="state.ram" />
           </UFormGroup>
           <UFormGroup :label="`Disk (${toMoney(state.disk)} GB)`" name="disk">
-            <URange :step="0" :min="0" :max="500" v-model="state.disk" />
+            <URange :step="50" :min="0" :max="500" v-model="state.disk" />
           </UFormGroup>
           <UFormGroup label="Chọn IP máy chủ" name="server">
             <USelectMenu :loading="loading" v-model="state.server" :disabled="item.info.length === 0"
@@ -235,15 +236,27 @@
             <UiText size="sm" weight="semibold" mini>Thông tin cấu hình</UiText>
             <UiFlex justify="between" class="mt-2">
               <UiText size="sm" color="gray" weight="semibold">CPU</UiText>
-              <UiText size="sm" align="right">{{ toMoney(state.cpu) }} CPU</UiText>
+              <UiFlex>
+                <UiText size="sm" align="right" weight="semibold">{{ useMoney().toMoney(state.cpu * product.cpu) }} /
+                </UiText>
+                <UiText size="sm" align="right" class="ml-1"> {{ toMoney(state.cpu) }} CPU </UiText>
+              </UiFlex>
             </UiFlex>
             <UiFlex justify="between" class="mt-2">
               <UiText size="sm" color="gray" weight="semibold">RAM</UiText>
-              <UiText size="sm" align="right">{{ toMoney(state.ram) }} GB</UiText>
+              <UiFlex>
+                <UiText size="sm" align="right" weight="semibold">{{ useMoney().toMoney(state.ram * product.ram) }} /
+                </UiText>
+                <UiText size="sm" align="right" class="ml-1">{{ toMoney(state.ram) }} GB</UiText>
+              </UiFlex>
             </UiFlex>
             <UiFlex justify="between" class="mt-2">
               <UiText size="sm" color="gray" weight="semibold">Disk</UiText>
-              <UiText size="sm" align="right">{{ toMoney(state.disk) }} GB</UiText>
+              <UiFlex>
+                <UiText size="sm" weight="semibold" align="right">{{ useMoney().toMoney(state.disk * product.disk) }} /
+                </UiText>
+                <UiText size="sm" align="right" class="ml-1">{{ toMoney(state.disk) }} GB</UiText>
+              </UiFlex>
             </UiFlex>
           </div>
           <div class="border-t py-2 border-gray-200 dark:border-gray-800">
@@ -283,7 +296,8 @@
                   @click="startCopy(useMoney().toMoney((state.cpu * product.cpu) + (state.ram * product.ram) + (state.disk * product.disk)))">
                   <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{
                     useMoney().toMoney((state.cpu * product.cpu) + (state.ram * product.ram) + (state.disk *
-                      product.disk)) }}</UiText>
+                      product.disk))
+                  }}</UiText>
                   <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
                 </UiFlex>
               </UiFlex>
@@ -299,6 +313,114 @@
           <UiFlex justify="end" class="pt-5">
             <UButton color="gray" @click="modal.upgrade = false">Đóng</UButton>
             <UButton color="primary" class="ml-2" @click="upgrade">Hoàn tất</UButton>
+          </UiFlex>
+        </UForm>
+      </UCard>
+    </UModal>
+    <!-- expired -->
+    <UModal v-model="modal.expired" prevent-close>
+      <UCard>
+        <UForm :state="state">
+          <UiText size="sm" weight="semibold" class="pb-2" mini>Chọn chu kỳ gian hạn</UiText>
+          <div class="grid-cols-12 grid gap-4 pb-2">
+            <div v-for="(option, index) in item.product.options" :key="index" @click="getOption(option, index)"
+              :class="['grid col-span-6 md:col-span-3 h-20 flex flex-col justify-center items-center rounded-lg border relative cursor-pointer', index === stateExpired.index ? 'border-primary' : 'border-gray-200 dark:border-gray-600']">
+              <div class="absolute top-1 right-2">
+                <UiIcon size="6" color="primary" name="iconamoon:check-bold" v-if="index === stateExpired.index" />
+              </div>
+              <div class="text-center">
+                <UiText class="text-sm font-medium">{{ option.number }} Tháng </UiText>
+                <UiText class="text-sm font-medium">{{ useMoney().toMoney(option?.price) }}</UiText>
+              </div>
+            </div>
+          </div>
+          <UFormGroup label="Chọn IP máy chủ" name="server">
+            <USelectMenu :loading="loading" v-model="stateExpired.server" :disabled="item.info.length === 0"
+              :options="item.info" placeholder="Chọn IP máy chủ" option-attribute="ip">
+              <template #option="{ option: person }">
+                <UiText class="truncate">{{ person.ip }}</UiText>
+              </template>
+            </USelectMenu>
+          </UFormGroup>
+          <div class="border-t py-2 border-gray-200 dark:border-gray-800">
+            <UiText size="sm" weight="semibold" mini>Thông tin gian hạn</UiText>
+            <UiFlex justify="between" class="mt-2">
+              <UiText size="sm" color="gray" weight="semibold">CPU</UiText>
+              <UiFlex>
+                <UiText size="sm" align="right" weight="semibold">{{ useMoney().toMoney(state.cpu * product.cpu) }} /
+                </UiText>
+                <UiText size="sm" align="right" class="ml-1"> {{ toMoney(state.cpu) }} CPU </UiText>
+              </UiFlex>
+            </UiFlex>
+            <UiFlex justify="between" class="mt-2">
+              <UiText size="sm" color="gray" weight="semibold">RAM</UiText>
+              <UiFlex>
+                <UiText size="sm" align="right" weight="semibold">{{ useMoney().toMoney(state.ram * product.ram) }} /
+                </UiText>
+                <UiText size="sm" align="right" class="ml-1">{{ toMoney(state.ram) }} GB</UiText>
+              </UiFlex>
+            </UiFlex>
+            <UiFlex justify="between" class="mt-2">
+              <UiText size="sm" color="gray" weight="semibold">Disk</UiText>
+              <UiFlex>
+                <UiText size="sm" weight="semibold" align="right">{{ useMoney().toMoney(state.disk * product.disk) }} /
+                </UiText>
+                <UiText size="sm" align="right" class="ml-1">{{ toMoney(state.disk) }} GB</UiText>
+              </UiFlex>
+            </UiFlex>
+          </div>
+          <div class="border-t py-2 border-gray-200 dark:border-gray-800">
+            <UiText size="sm" weight="semibold" mini>Phương thức thanh toán</UiText>
+            <div v-if="gate && gate.length" class="grid-cols-12 grid gap-2 mt-3">
+              <div v-for="(item, index) in gate" :key="index" @click="getOption(item, index)"
+                :class="['grid col-span-6 md:col-span-3 h-16 flex flex-col justify-center items-center rounded-lg border relative cursor-pointer', index === state.index ? 'border-primary' : 'border-gray-200 dark:border-gray-600']">
+                <div class="absolute top-0 right-2">
+                  <UiIcon size="6" color="primary" name="iconamoon:check-bold" v-if="index === state.index" />
+                </div>
+                <UiText size="sm" class="text-center" color="gray" weight="semibold">{{ item.name }}</UiText>
+              </div>
+            </div>
+            <UiText v-else text="Chưa có phương thức thanh toán" size="sm" color="red" />
+            <div v-if="state.gate">
+              <UiText text="Thông tin thanh toán" weight="semibold" size="sm"
+                class="py-3 border-b border-gray-200 dark:border-gray-800" />
+              <UiFlex justify="between" class="my-4">
+                <UiText size="sm" color="gray" weight="semibold">Kênh</UiText>
+                <UiText size="sm" weight="semibold">{{ state.gate.name || "..." }}</UiText>
+              </UiFlex>
+              <UiFlex justify="between" class="mb-4">
+                <UiText size="sm" color="gray" weight="semibold" mini>Người nhận</UiText>
+                <UiText size="sm" weight="semibold" align="right" class="ml-4">{{ state.gate.person || "..." }}</UiText>
+              </UiFlex>
+              <UiFlex justify="between" class="mb-4">
+                <UiText size="sm" color="gray" weight="semibold" mini>Số tài khoản</UiText>
+                <UiFlex @click="startCopy(state.gate.number)">
+                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ state.gate.number }}
+                  </UiText>
+                  <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
+                </UiFlex>
+              </UiFlex>
+              <UiFlex justify="between" class="mb-4">
+                <UiText size="sm" color="gray" weight="semibold" mini>Số tiền</UiText>
+                <UiFlex @click="startCopy(useMoney().toMoney(stateExpired?.option?.money))">
+                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{
+                    useMoney().toMoney(stateExpired?.option?.money)
+                  }}</UiText>
+                  <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
+                </UiFlex>
+              </UiFlex>
+              <UiFlex justify="between" class="mb-4">
+                <UiText size="sm" color="gray" weight="semibold" mini>Nội dung</UiText>
+                <UiFlex @click="startCopy(state.code)">
+                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ state.code }}</UiText>
+                  <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
+                </UiFlex>
+              </UiFlex>
+            </div>
+          </div>
+          <UiFlex justify="end" class="pt-5">
+            <UButton color="gray" @click="modal.expired = false">Đóng</UButton>
+            <UButton color="primary" class="ml-2">Hoàn tất</UButton>
           </UiFlex>
         </UForm>
       </UCard>
@@ -321,6 +443,7 @@ const list = ref<any[]>([]);
 const modal = ref({
   gate: false,
   upgrade: false,
+  expired: false
 })
 const options = ref<any[]>([
   { label: "5", value: 5 },
@@ -329,7 +452,14 @@ const options = ref<any[]>([
   { label: "50", value: 50 },
   { label: "100", value: 100 },
 ]);
-
+const stateExpired = ref<any>({
+  index: 0,
+  option: {
+    number: 0,
+    money: 0
+  },
+  server: undefined
+})
 const state = ref<any>({
   service: route.params.key,
   cpu: 0,
@@ -347,10 +477,11 @@ const showGate = ref<any>({
 });
 
 const statusFormat = ref<any>({
-  0: { label: 'Chưa kích hoạt', color: 'orange' },
+  0: { label: 'Chưa kích hoạt', color: 'gray' },
   1: { label: 'Đã kích hoạt', color: 'green' },
   2: { label: 'Hết hạn', color: 'primary' },
   3: { label: 'Đã hủy', color: 'red' },
+  4: { label: 'Sắp hết hạn', color: 'orange' },
 });
 
 const page = ref<any>({

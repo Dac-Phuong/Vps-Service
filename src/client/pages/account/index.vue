@@ -17,6 +17,7 @@ useSeoMeta({
   ogTitle: () => "Tài khoản - ENI"
 })
 const authStore = useAuthStore()
+
 const tab = ref(0)
 const items = [{
   label: 'Hồ sơ cá nhân'

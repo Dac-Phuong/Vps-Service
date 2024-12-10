@@ -5,15 +5,15 @@ import type { IDBConfig, IDBUser } from "~~/types"
 export default defineEventHandler(async (event) => {
   try {
     const runtimeConfig = useRuntimeConfig()
-    const { username, password, email, phone } = await readBody(event)
+    const { account, password, email, phone } = await readBody(event)
 
-    if (!username) throw 'Vui lòng nhập tài khoản'
-    if (username.length < 6 || username.length > 15) throw 'Tài khoản trong khoảng 6-15 ký tự'
-    if (!!username.match(/\s/g)) throw 'Tài khoản không có khoảng cách'
-    if (!(/^[a-z0-9]*$/g).test(username)) throw 'Tài khoản không có ký tự đặc biệt và viết hoa'
-    if (!!username.includes('admin')
-      || !!username.includes('smod')
-      || !!username.includes('robot')
+    if (!account) throw 'Vui lòng nhập tài khoản'
+    if (account.length < 6 || account.length > 15) throw 'Tài khoản trong khoảng 6-15 ký tự'
+    if (!!account.match(/\s/g)) throw 'Tài khoản không có khoảng cách'
+    if (!(/^[a-z0-9]*$/g).test(account)) throw 'Tài khoản không có ký tự đặc biệt và viết hoa'
+    if (!!account.includes('admin')
+      || !!account.includes('smod')
+      || !!account.includes('robot')
     ) throw 'Tài khoản không hợp lệ'
 
     if (!email) throw 'Vui lòng nhập Email'
@@ -34,15 +34,15 @@ export default defineEventHandler(async (event) => {
     const userCheck = await DB.User
     .findOne({ 
       $or: [
-        { username: username },
+        { account: account },
         { phone: phone },
         { email: email }
       ]
     })
-    .select('username email phone') as IDBUser
+    .select('account email phone') as IDBUser
     
     if(!!userCheck){
-      if(userCheck.username == username) throw 'Tài khoản đã tồn tại'
+      if(userCheck.account == account) throw 'Tài khoản đã tồn tại'
       if(userCheck.phone == phone) throw 'Số điện thoại đã tồn tại'
       if(userCheck.email == email) throw 'Địa chỉ Email đã tồn tại'
     }
@@ -52,7 +52,8 @@ export default defineEventHandler(async (event) => {
 
     // Create
     const user = await DB.User.create({
-      username: username,
+      account: account,
+      username: account,
       password: md5(password),
       phone: phone,
       email: email,

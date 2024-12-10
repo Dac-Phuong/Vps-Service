@@ -167,7 +167,7 @@ const columns = [
     label: "Mã giao dịch",
   },
   {
-    key: "user.username",
+    key: "user.account",
     label: "Khách hàng",
   },
   {

@@ -19,9 +19,9 @@
         :columns="selectedColumns" 
         :rows="list"
       >
-        <template #username-data="{ row }">
+        <template #account-data="{ row }">
           <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewUser(row._id)">
-            {{ row.username }}
+            {{ row.account }}
           </UBadge>
         </template>
 
@@ -107,7 +107,7 @@ const list = ref([])
 // Columns
 const columns = [
   {
-    key: 'username',
+    key: 'account',
     label: 'Tên',
   },{
     key: 'phone',

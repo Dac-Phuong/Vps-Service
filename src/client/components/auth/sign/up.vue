@@ -1,7 +1,7 @@
 <template>
   <UForm :state="state" :validate="validate" @submit="submit">
-    <UFormGroup label="Tài khoản" name="username" :hint="`${state.username ? state.username.length : 0}/15`">
-      <UInput icon="i-bxs-user" v-model="state.username" />
+    <UFormGroup label="Tài khoản" name="account" :hint="`${state.account ? state.account.length : 0}/15`">
+      <UInput icon="i-bxs-user" v-model="state.account" />
     </UFormGroup>
 
     <UFormGroup label="Email" name="email">
@@ -33,7 +33,7 @@ const props = defineProps({
 const authStore = useAuthStore()
 const loading = ref(false)
 const state = ref({
-  username: undefined,
+  account: undefined,
   email: undefined,
   phone: undefined,
   password: undefined
@@ -41,11 +41,11 @@ const state = ref({
 
 const validate = (state) => {
   const errors = []
-  if (!state.username) errors.push({ path: 'username', message: 'Vui lòng nhập đầy đủ' })
-  else if (state.username.length < 6 || state.username.length > 15) errors.push({ path: 'username', message: 'Độ dài 6-15 ký tự' })
-  else if (!!state.username.match(/\s/g)) errors.push({ path: 'username', message: 'Phát hiện khoảng cách' })
-  else if (!(/^[a-z0-9]*$/g).test(state.username)) errors.push({ path: 'username', message: 'Phát hiện ký tự đặc biệt và viết hoa' })
-  else if (!!state.username.includes('admin') || !!state.username.includes('smod') || !!state.username.includes('robot')) errors.push({ path: 'username', message: 'Danh xưng không hợp lệ' })
+  if (!state.account) errors.push({ path: 'account', message: 'Vui lòng nhập đầy đủ' })
+  else if (state.account.length < 6 || state.account.length > 15) errors.push({ path: 'account', message: 'Độ dài 6-15 ký tự' })
+  else if (!!state.account.match(/\s/g)) errors.push({ path: 'account', message: 'Phát hiện khoảng cách' })
+  else if (!(/^[a-z0-9]*$/g).test(state.account)) errors.push({ path: 'account', message: 'Phát hiện ký tự đặc biệt và viết hoa' })
+  else if (!!state.account.includes('admin') || !!state.account.includes('smod') || !!state.account.includes('robot')) errors.push({ path: 'account', message: 'Danh xưng không hợp lệ' })
 
   if (!state.email) errors.push({ path: 'email', message: 'Vui lòng nhập đầy đủ' })
   else if (!state.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) errors.push({ path: 'email', message: 'Định dạng không đúng' })

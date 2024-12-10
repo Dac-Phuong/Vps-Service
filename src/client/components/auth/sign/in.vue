@@ -1,7 +1,7 @@
 <template>
   <UForm :state="state" :validate="validate" @submit="submit">
-    <UFormGroup label="Tài khoản" name="username">
-      <UInput icon="i-bxs-user" v-model="state.username" />
+    <UFormGroup label="Tài khoản" name="account">
+      <UInput icon="i-bxs-user" v-model="state.account" />
     </UFormGroup>
 
     <UFormGroup label="Mật khẩu" name="password">
@@ -26,13 +26,13 @@ const props = defineProps({
 const authStore = useAuthStore()
 const loading = ref(false)
 const state = ref({
-  username: null,
+  account: null,
   password: null
 })
 
 const validate = (state) => {
   const errors = []
-  if (!state.username) errors.push({ path: 'username', message: 'Vui lòng nhập đầy đủ' })
+  if (!state.account) errors.push({ path: 'account', message: 'Vui lòng nhập đầy đủ' })
   if (!state.password) errors.push({ path: 'password', message: 'Vui lòng nhập đầy đủ' })
   return errors
 }

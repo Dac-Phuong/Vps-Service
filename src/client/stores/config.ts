@@ -28,14 +28,6 @@ export const useConfigStore = defineStore('config', () => {
       tiktok: '',
       telegram: '',
     },
-  
-    vip: {
-      month: 0,
-      quarter : 0,
-      year: 0,
-      forever: 0
-    },
-
     facebook: {
       client_id: '',
       client_version: '',

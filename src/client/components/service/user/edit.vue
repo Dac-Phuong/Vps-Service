@@ -31,6 +31,7 @@
 const authStore = useAuthStore()
 const loading = ref(false)
 const state = ref(JSON.parse(JSON.stringify(authStore.profile)))
+console.log(state.value);
 
 const submit = async () => {
   try {

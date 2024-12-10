@@ -25,7 +25,7 @@
 
         <template #user-data="{ row }">
           <UBadge variant="soft" color="gray" class="cursor-pointer" >
-            {{ row.user.username }}
+            {{ row.user.account }}
           </UBadge>
         </template>
 
@@ -52,7 +52,7 @@
         <template #verify_person-data="{ row }">
           <span v-if="!row.verify_person">...</span>
           <UBadge v-else variant="soft" color="gray" class="cursor-pointer" >
-            {{ row.verify_person.username }}
+            {{ row.verify_person.account }}
           </UBadge>
         </template>
 

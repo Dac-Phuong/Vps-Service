@@ -95,13 +95,6 @@ export interface IDBConfigStore {
     telegram: string
   }
 
-  vip: {
-    month: number
-    quarter: number
-    year: number
-    forever: number
-  }
-
   facebook: {
     client_id: string
     client_version: string

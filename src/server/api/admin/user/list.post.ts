@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
     const match : any = {}
     if(!!search.key){
-      if(search.by == 'USER') match['username'] = { $regex : search.key.toLowerCase(), $options : 'i' }
+      if(search.by == 'USER') match['account'] = { $regex : search.key.toLowerCase(), $options : 'i' }
       if(search.by == 'MAIL') match['email'] = { $regex : search.key.toLowerCase(), $options : 'i' }
       if(search.by == 'PHONE') match['phone'] = { $regex : search.key, $options : 'i' }
     }
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
       { $match: match },
       { 
         $project: {
-          username: 1, 
+          account: 1, 
           email: 1,
           phone: 1,
           type: 1,

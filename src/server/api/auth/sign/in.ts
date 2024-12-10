@@ -5,13 +5,13 @@ import { IDBUser } from '~~/types'
 export default defineEventHandler(async (event) => {
   try {
     const runtimeConfig = useRuntimeConfig()
-    const { username, password } = await readBody(event)
-    if(!username || !password) throw 'Vui lòng nhập đầy đủ thông tin'
+    const { account, password } = await readBody(event)
+    if(!account || !password) throw 'Vui lòng nhập đầy đủ thông tin'
 
     // Get User
     const user = await DB.User
-    .findOne({ username: username.toLowerCase() })
-    .select('username password block type token') as IDBUser
+    .findOne({ account: account.toLowerCase() })
+    .select('account password block type token') as IDBUser
     
     // Check User
     if(!user) throw 'Tài khoản không tồn tại'

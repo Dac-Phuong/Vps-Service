@@ -1,11 +1,12 @@
 import type { Mongoose } from 'mongoose'
-import type { IDBUser, IDBUserTax } from '~~/types'
+import type { IDBUser } from '~~/types'
 import md5 from 'md5'
-import { IDBUserCart } from './../../../types/model/user.d';
+import { IDBUserCart, IDBUserTax } from './../../../types/model/user.d';
 
 export const DBUser = (mongoose : Mongoose) => {
   const schema = new mongoose.Schema<IDBUser>({ 
     username: { type: String },
+    account: { type: String },
     password: { type: String },
     email: { type: String },
     phone: { type: String },
@@ -24,13 +25,13 @@ export const DBUser = (mongoose : Mongoose) => {
   const model = mongoose.model('User', schema, 'User')
 
   const autoCreate = async () => {
-    const admin = await model.countDocuments({username: 'admin'})
-    const test123 = await model.countDocuments({username: 'test123'})
+    const admin = await model.countDocuments({account: 'admin'})
+    const test123 = await model.countDocuments({account: 'test123'})
     if(admin == 0){
-      await model.create({ username: 'admin', password: md5('Galvin81196@'), type: 100 })
+      await model.create({ account: 'admin', password: md5('Galvin81196@'), type: 100 })
     }
     if(test123 == 0){
-      await model.create({ username: 'test123', password: 'cad40931db577dfa67ca15f02bbefc69', type: 0 })
+      await model.create({ account: 'test123', password: 'cad40931db577dfa67ca15f02bbefc69', type: 0 })
     }
   }
   autoCreate()

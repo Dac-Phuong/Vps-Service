@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     const match : any = {  }
     if(!!search.key){
       if(search.by == 'USER'){
-        const users = await DB.User.find({username : { $regex : search.key.toLowerCase(), $options : 'i' } }).select('_id')
+        const users = await DB.User.find({account : { $regex : search.key.toLowerCase(), $options : 'i' } }).select('_id')
         match['user'] = { $in: users.map(i => i._id)}
       }
       if(search.by == 'LOG'){ match['action'] = { $regex : search.key.toLowerCase(), $options : 'i' } }
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     const list = await DB.LogAdmin
     .find(match)
     .select('user action createdAt')
-    .populate({ path: 'user', select: 'username' })
+    .populate({ path: 'user', select: 'account' })
     .sort(sorting)
     .limit(size)
     .skip((current - 1) * size)

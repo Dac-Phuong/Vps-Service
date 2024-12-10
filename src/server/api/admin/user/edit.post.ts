@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     if(!_id) throw 'Dữ liệu đầu vào không hợp lệ'
 
     const user = await DB.User.findOne({_id: _id})
-    .select('username email phone type block') as IDBUser
+    .select('account email phone type block') as IDBUser
 
     if(!user) throw 'Người dùng không tồn tại'
 
@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
       update['email'] = email
       change.push('Email')
     }
+
     if(!!phone && user.phone != phone){
       const check = await DB.User.findOne({ phone: phone }).select('_id')
       if(!!check) throw 'Số điện thoại đã tồn tại'
@@ -34,12 +35,7 @@ export default defineEventHandler(async (event) => {
       update['password'] = md5(password)
       change.push('Mật khẩu')
     }
-    if(user.type != type){
-      if(type == 2 && auth.type < 2) throw 'Smod không thể nâng quyền tài khoản'
 
-      update['type'] = type
-      change.push('Quyền tài khoản')
-    }
     if(user.block != block){
       update['block'] = block
       change.push('Trạng thái khóa')
@@ -47,7 +43,7 @@ export default defineEventHandler(async (event) => {
 
     if(change.length > 0){
       await DB.User.updateOne({ _id: _id }, update)
-      logAdmin(event, `Sửa <b>${change.join(', ')}</b> của tài khoản <b>${user.username}</b>`)
+      logAdmin(event, `Sửa <b>${change.join(', ')}</b> của tài khoản <b>${user.account}</b>`)
     }
     
     return resp(event, { message: 'Sửa thông tin thành công' })
