@@ -45,7 +45,11 @@ export const useConfigStore = defineStore('config', () => {
       client_id: '',
       client_verify: '',
     },
-    
+    product:{
+      cpu: 0,
+      ram: 0,
+      disk: 0
+    },
     zalo: {
       client_id: '',
       client_verify: '',

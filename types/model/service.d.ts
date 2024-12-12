@@ -26,9 +26,8 @@ export interface IDBServiceUpgrade {
   gate: Types.ObjectId | IDBGate
   user: Types.ObjectId | IDBUser
   status: number
-  ram: number
-  cpu: number
-  disk: number
+  option: Object
+  type: number
   money: number
   note: string
   server: Object

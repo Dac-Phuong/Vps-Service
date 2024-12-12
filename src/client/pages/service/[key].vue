@@ -77,14 +77,14 @@
         <UiText size="sm" class="mt-2" v-else color="red">Chưa có thống tin máy chủ</UiText>
       </div>
       <UiFlex class="mt-2">
-        <UButton v-if="item.status == 2 || item.status == 4" icon="material-symbols:sync" @click="modal.expired = true"
+        <UButton v-if="item.status == 2 || item.status == 4" icon="material-symbols:sync" @click="modal.extend = true"
           class="ml-2" color="primary">Gia hạn máy chủ</UButton>
         <UButton v-else icon="material-symbols:upload-rounded" :disabled="item.status !== 1 && item.status !== 4"
           @click="modal.upgrade = true" color="primary"> Nâng cấp</UButton>
       </UiFlex>
     </UCard>
     <!-- Table -->
-    <div class="mt-5" v-if="item.status == 1">
+    <div class="mt-5" v-if="item.status !== 0">
       <UiText text="Lịch sử nâng cấp" weight="semibold" size="base" class="pb-2" />
       <UCard :ui="{
         body: { padding: 'p-0 sm:p-0' },
@@ -114,30 +114,26 @@
           </template>
 
           <template #gate-data="{ row }">
-            <UBadge variant="soft" color="gray">{{ row.gate?.name || "..." }}</UBadge>
+            <UBadge  color="gray">{{ row.gate?.name || "..." }}</UBadge>
           </template>
 
           <template #server-data="{ row }">
-            <UBadge variant="soft" color="gray">{{ row.server?.ip || "..." }}
+            {{ row.server?.ip || "..." }}
+          </template>
+          <template #type-data="{ row }">
+            <UBadge :color="row.type == 1 ? 'primary' : 'cyan'" >
+              {{ row.type == 1 ? 'Gói gia hạn' : 'Gói nâng cấp' }}
             </UBadge>
           </template>
-
-          <template #ram-data="{ row }">
-            {{ row.ram }} GB
-          </template>
-
-          <template #cpu-data="{ row }">
-            {{ row.cpu }} CPU
-          </template>
-          <template #disk-data="{ row }">
-            {{ row.disk }} GB
+          <template #option-data="{ row }">
+            {{ row.type == 1 ? `${useMoney().toMoney(row.option.price)} / ${row.option.number} Tháng` : `RAM: (${row.option.ram} GB), CPU: (${row.option.cpu} CORE), DISK: (${row.option.disk} GB)` }}
           </template>
           <template #money-data="{ row }">
             <UiText weight="semibold">{{ toMoney(row.money) }}đ</UiText>
           </template>
 
           <template #status-data="{ row }">
-            <UBadge :color="statusFormat[row.status].color" variant="soft">
+            <UBadge :color="statusFormat[row.status].color" >
               {{ statusFormat[row.status].label }}
             </UBadge>
           </template>
@@ -317,16 +313,16 @@
         </UForm>
       </UCard>
     </UModal>
-    <!-- expired -->
-    <UModal v-model="modal.expired" prevent-close>
+    <!-- extend -->
+    <UModal v-model="modal.extend" prevent-close>
       <UCard>
-        <UForm :state="state">
+        <UForm :state="state" @submit="extend">
           <UiText size="sm" weight="semibold" class="pb-2" mini>Chọn chu kỳ gian hạn</UiText>
           <div class="grid-cols-12 grid gap-4 pb-2">
-            <div v-for="(option, index) in item.product.options" :key="index" @click="getOption(option, index)"
-              :class="['grid col-span-6 md:col-span-3 h-20 flex flex-col justify-center items-center rounded-lg border relative cursor-pointer', index === stateExpired.index ? 'border-primary' : 'border-gray-200 dark:border-gray-600']">
+            <div v-for="(option, index) in item.product.options" :key="index" @click="getOptionExtend(option, index)"
+              :class="['grid col-span-6 md:col-span-3 h-20 flex flex-col justify-center items-center rounded-lg border relative cursor-pointer', index === stateExtend.index ? 'border-primary' : 'border-gray-200 dark:border-gray-600']">
               <div class="absolute top-1 right-2">
-                <UiIcon size="6" color="primary" name="iconamoon:check-bold" v-if="index === stateExpired.index" />
+                <UiIcon size="6" color="primary" name="iconamoon:check-bold" v-if="index === stateExtend.index" />
               </div>
               <div class="text-center">
                 <UiText class="text-sm font-medium">{{ option.number }} Tháng </UiText>
@@ -335,7 +331,7 @@
             </div>
           </div>
           <UFormGroup label="Chọn IP máy chủ" name="server">
-            <USelectMenu :loading="loading" v-model="stateExpired.server" :disabled="item.info.length === 0"
+            <USelectMenu :loading="loading" v-model="stateExtend.server" :disabled="item.info.length === 0"
               :options="item.info" placeholder="Chọn IP máy chủ" option-attribute="ip">
               <template #option="{ option: person }">
                 <UiText class="truncate">{{ person.ip }}</UiText>
@@ -345,27 +341,10 @@
           <div class="border-t py-2 border-gray-200 dark:border-gray-800">
             <UiText size="sm" weight="semibold" mini>Thông tin gian hạn</UiText>
             <UiFlex justify="between" class="mt-2">
-              <UiText size="sm" color="gray" weight="semibold">CPU</UiText>
+              <UiText size="sm" color="gray" weight="semibold">Chu kỳ gia hạn</UiText>
               <UiFlex>
-                <UiText size="sm" align="right" weight="semibold">{{ useMoney().toMoney(state.cpu * product.cpu) }} /
-                </UiText>
-                <UiText size="sm" align="right" class="ml-1"> {{ toMoney(state.cpu) }} CPU </UiText>
-              </UiFlex>
-            </UiFlex>
-            <UiFlex justify="between" class="mt-2">
-              <UiText size="sm" color="gray" weight="semibold">RAM</UiText>
-              <UiFlex>
-                <UiText size="sm" align="right" weight="semibold">{{ useMoney().toMoney(state.ram * product.ram) }} /
-                </UiText>
-                <UiText size="sm" align="right" class="ml-1">{{ toMoney(state.ram) }} GB</UiText>
-              </UiFlex>
-            </UiFlex>
-            <UiFlex justify="between" class="mt-2">
-              <UiText size="sm" color="gray" weight="semibold">Disk</UiText>
-              <UiFlex>
-                <UiText size="sm" weight="semibold" align="right">{{ useMoney().toMoney(state.disk * product.disk) }} /
-                </UiText>
-                <UiText size="sm" align="right" class="ml-1">{{ toMoney(state.disk) }} GB</UiText>
+                <UiText size="sm" align="right" weight="semibold"> {{ useMoney().toMoney(stateExtend?.option?.price) }} / </UiText>
+                <UiText size="sm" align="right" class="ml-1" >{{ stateExtend?.option?.number }} Tháng </UiText>
               </UiFlex>
             </UiFlex>
           </div>
@@ -402,25 +381,23 @@
               </UiFlex>
               <UiFlex justify="between" class="mb-4">
                 <UiText size="sm" color="gray" weight="semibold" mini>Số tiền</UiText>
-                <UiFlex @click="startCopy(useMoney().toMoney(stateExpired?.option?.money))">
-                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{
-                    useMoney().toMoney(stateExpired?.option?.money)
-                  }}</UiText>
+                <UiFlex @click="startCopy(useMoney().toMoney(stateExtend?.option?.price))">
+                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{useMoney().toMoney(stateExtend?.option?.price)}}</UiText>
                   <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
                 </UiFlex>
               </UiFlex>
               <UiFlex justify="between" class="mb-4">
                 <UiText size="sm" color="gray" weight="semibold" mini>Nội dung</UiText>
-                <UiFlex @click="startCopy(state.code)">
-                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ state.code }}</UiText>
+                <UiFlex @click="startCopy(stateExtend.code)">
+                  <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ stateExtend.code }}</UiText>
                   <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
                 </UiFlex>
               </UiFlex>
             </div>
           </div>
           <UiFlex justify="end" class="pt-5">
-            <UButton color="gray" @click="modal.expired = false">Đóng</UButton>
-            <UButton color="primary" class="ml-2">Hoàn tất</UButton>
+            <UButton color="gray" @click="modal.extend = false">Đóng</UButton>
+            <UButton color="primary" type="submit" class="ml-2">Hoàn tất</UButton>
           </UiFlex>
         </UForm>
       </UCard>
@@ -443,7 +420,7 @@ const list = ref<any[]>([]);
 const modal = ref({
   gate: false,
   upgrade: false,
-  expired: false
+  extend: false
 })
 const options = ref<any[]>([
   { label: "5", value: 5 },
@@ -452,12 +429,15 @@ const options = ref<any[]>([
   { label: "50", value: 50 },
   { label: "100", value: 100 },
 ]);
-const stateExpired = ref<any>({
+const stateExtend = ref<any>({
   index: 0,
   option: {
     number: 0,
-    money: 0
+    price: 0
   },
+  gate: undefined,
+  service: route.params.key,
+  code: "Extend-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
   server: undefined
 })
 const state = ref<any>({
@@ -477,7 +457,7 @@ const showGate = ref<any>({
 });
 
 const statusFormat = ref<any>({
-  0: { label: 'Chưa kích hoạt', color: 'gray' },
+  0: { label: 'Chưa kích hoạt', color: 'yellow' },
   1: { label: 'Đã kích hoạt', color: 'green' },
   2: { label: 'Hết hạn', color: 'primary' },
   3: { label: 'Đã hủy', color: 'red' },
@@ -515,16 +495,12 @@ const columns = [
     label: 'Trạng thái',
   },
   {
-    key: 'ram',
-    label: 'RAM',
+    key: "type",
+    label: "Kiểu nâng cấp",
   },
   {
-    key: 'cpu',
-    label: 'CPU',
-  },
-  {
-    key: 'disk',
-    label: 'DISK',
+    key: "option",
+    label: "Thông tin nâng cấp",
   },
   {
     key: 'createdAt',
@@ -537,9 +513,15 @@ const startCopy = (text: string) => {
   copy(text)
   useNotify().success('Sao chép vào bộ nhớ tạm thành công')
 }
+const getOptionExtend = (data: any, index: number) => {
+  stateExtend.value.index = index
+  stateExtend.value.option = data
+  
+};
 const getOption = (data: any, index: number) => {
   state.value.index = index
   state.value.gate = data
+  stateExtend.value.gate = data
 };
 const viewGate = (data: Record<string, any>, money: number, code: string) => {
   modal.value.gate = true;
@@ -556,6 +538,11 @@ watch(() => modal.value.upgrade, () => {
   state.value.server = undefined
   state.value.code = "Upgrade-" + Math.random().toString(36).substring(2, 6).toUpperCase();
 })
+
+watch(() => modal.value.extend, () => {
+  stateExtend.value.code = "Extend-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+})
+
 watch(() => page.value.size, () => getList());
 watch(() => page.value.current, () => getList());
 watch(() => page.value.sort.column, () => getList());
@@ -566,6 +553,8 @@ const get = async () => {
   try {
     loading.value = true;
     const data = await useAPI("client/service/detail", { _id: route.params.key });
+    stateExtend.value.option = data.service.product.options[0]
+    stateExtend.value.gate = data.gate[0]
     item.value = data.service;
     gate.value = data.gate
     state.value.gate = data.gate[0]
@@ -586,6 +575,17 @@ const upgrade = async () => {
     loading.value = false;
   }
 }
+const extend = async () => {
+  try {
+    loading.value = true;
+    await useAPI("client/service/extend", JSON.parse(JSON.stringify(stateExtend.value)));
+    loading.value = false;
+    getList()
+    modal.value.extend = false
+  } catch (error) {
+    loading.value = false;
+  }
+}
 const getList = async () => {
   try {
     loading.value = true
@@ -598,7 +598,6 @@ const getList = async () => {
     loading.value = false
   }
 }
-
 nextTick(async () => {
   await get()
   await getList()

@@ -1,5 +1,5 @@
 <template>
-  <UiContent title="UPgrade" sub="Quản lý nâng cấp VPS">
+  <UiContent title="Upgrade" sub="Quản lý nâng cấp VPS">
     <UiFlex class="mb-4">
       <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
       <UForm :state="page" @submit="getList" class="mr-1">
@@ -26,14 +26,13 @@
         <template #money-data="{ row }">
           {{ useMoney().toMoney(row.money) }} đ
         </template>
-        <template #ram-data="{ row }">
-          {{ row.ram }} GB
+        <template #type-data="{ row }">
+          <UBadge :color="row.type == 1 ? 'primary' : 'gray'" variant="soft">
+            {{ row.type == 1 ? 'Gói gia hạn' : 'Gói nâng cấp' }}
+          </UBadge>
         </template>
-        <template #cpu-data="{ row }">
-          {{ row.cpu }} CPU
-        </template>
-        <template #disk-data="{ row }">
-          {{ row.disk }} GB
+        <template #option-data="{ row }">
+          {{ row.type == 1 ? `${useMoney().toMoney(row.option.price)} / ${row.option.number} Tháng` : `RAM: (${row.option.ram} GB), CPU: (${row.option.cpu} CORE), DISK: (${row.option.disk} GB)` }}
         </template>
         <template #createdAt-data="{ row }">
           {{ useDayJs().displayFull(row.createdAt) }}
@@ -176,11 +175,12 @@ const columns = [
   },
   {
     key: "service",
-    label: "Thông tin VPS",
+    label: "VPS",
   },
   {
     key: "money",
     label: "Số tiền",
+    sortable: true
   },
   {
     key: "status",
@@ -188,16 +188,12 @@ const columns = [
     sortable: true
   },
   {
-    key: "ram",
-    label: "RAM",
+    key: "type",
+    label: "Kiểu nâng cấp",
   },
   {
-    key: "cpu",
-    label: "CPU",
-  },
-  {
-    key: "disk",
-    label: "Disk",
+    key: "option",
+    label: "Thông tin nâng cấp",
   },
   {
     key: "createdAt",

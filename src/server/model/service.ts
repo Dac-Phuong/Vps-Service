@@ -20,15 +20,14 @@ export const DBService = (mongoose: Mongoose) => {
   const model = mongoose.model('Sevice', schema, 'Sevice')
   return model
 }
-export const DBServiceUpgrate = (mongoose: Mongoose) => {
+export const DBServiceUpgrade = (mongoose: Mongoose) => {
   const schema = new mongoose.Schema<IDBServiceUpgrade>({
     service: { type: mongoose.Schema.Types.ObjectId, ref: 'Service'},
     gate: { type: mongoose.Schema.Types.ObjectId, ref: 'Gate'},
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     code: { type: String },
-    cpu: { type: Number },
-    ram: { type: Number },
-    disk: { type: Number },
+    option: { type: Object },
+    type: { type: Number, default: 0 },
     money: { type: Number },
     server: { type: Object },
     note: { type: String },
@@ -36,6 +35,6 @@ export const DBServiceUpgrate = (mongoose: Mongoose) => {
   }, {
     timestamps: true
   })
-  const model = mongoose.model('SeviceUpgrate', schema, 'SeviceUpgrate')
+  const model = mongoose.model('SeviceUpgrade', schema, 'SeviceUpgrade')
   return model
 }

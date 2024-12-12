@@ -8,11 +8,19 @@ export default defineEventHandler(async (event) => {
     const { _id, money } = await readBody(event)
     if (!_id || isNaN(money)) throw 'Dữ liệu đầu vào không hợp lệ'
 
-    const upgrade = await DB.ServiceUpgrade.findOne({ _id: _id })
+    const upgrade: any = await DB.ServiceUpgrade.findOne({ _id: _id })
     if (!upgrade) throw 'Gói nâng cấp không tìm thấy'
 
     const service = await DB.Service.findOne({ _id: upgrade.service })
     if (!service) throw 'Dịch vụ không tìm thấy'
+    
+    if(upgrade.type == 1 ){
+      service.status = 1
+      service.number = upgrade.option.number
+      service.money = upgrade.option.price
+      service.end_time = new Date(upgrade.createdAt.getTime() + (upgrade.option.number * 30 * 24 * 60 * 60 * 1000));
+      await service.save()
+    }
 
     upgrade.status = 1
     upgrade.money = money

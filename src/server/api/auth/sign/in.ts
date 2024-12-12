@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
     
     // Check User
     if(!user) throw 'Tài khoản không tồn tại'
+    
     if(md5(password) != user.password) throw 'Mật khẩu không chính xác'
     if(!!user.block) throw 'Tài khoản của bạn đang bị khóa'
 

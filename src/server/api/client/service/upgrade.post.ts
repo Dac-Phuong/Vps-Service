@@ -26,9 +26,11 @@ export default defineEventHandler(async (event) => {
       service: check._id,
       user: auth._id,
       code: code,
-      ram: ram,
-      cpu: cpu,
-      disk: disk,
+      option: {
+        ram: ram,
+        cpu: cpu,
+        disk: disk
+      },
       money: total || 0,
       server: server,
       status: 0
